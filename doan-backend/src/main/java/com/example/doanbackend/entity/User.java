@@ -23,20 +23,32 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
+    @Column(name = "Ma_Nhan_vien", unique = true, nullable = false)
+    private String maNhanVien;
     @Column(name = "fullName",nullable = false)
     private String fullName;
     @Column(name = "email", unique = true, nullable = false)
     private String email;
     @Column(name = "password", nullable = false)
     private String password;
-    @Column(name = "avatar")
-    private String avatar;
+    @Column(name = "So_DT")
+    private String phoneNumber;
+    @Column(name = "Dia_Chi")
+    private String Address;
+
+    @ManyToOne
+    @JoinColumn(name = "avatar")
+    private Image avatar;
+
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "roles_id"))
     private List<Role> roles = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "loai_nhan_vien_id")
+    private LoaiNhanVien loaiNhanVien;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

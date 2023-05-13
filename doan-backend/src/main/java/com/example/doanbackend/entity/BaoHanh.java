@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -17,34 +19,38 @@ public class BaoHanh {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
-    @Column(name = "Mã_Số_Bảo_Hành")
+    @Column(name = "Ma_So_Bao_Hanh", unique = true)
     private String maSoBaoHanh;
-    @Column(name = "Tên_Loại_Bảo_Hành")
-    private String tenLoaiBaoHanh;
-    @Column(name = "Thời_Gian_Bảo_Hành")
-    private Integer thoiGianBaoHanh;
-    private boolean trangThai;
-    @Column(name = "Ngày_Kích_Hoạt_Bảo_Hành")
-    private LocalDateTime ngayKichHoatBaoHanh;
+    @Column(name = "ngay_kich_hoat")
+    private LocalDateTime ngayKichHoat;
+    @Column(name = "ngay_het_han")
+    private LocalDateTime ngayHetHan;
+    @Column(name = "trang_thai_bao_hanh")
+    private boolean trangThaiBaoHanh = true;
+
+    @OneToOne(orphanRemoval = true)
+    @JoinColumn(name = "linh_kien_id")
+    private LinhKien linhKien;
 
     @ManyToOne
+    @JoinColumn(name = "hoa_don_id")
+    private HoaDon hoaDon;
+
+    @OneToOne(orphanRemoval = true)
     @JoinColumn(name = "san_pham_id")
     private SanPham sanPham;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "khach_hang_id")
     private KhachHang khachHang;
 
-    @ManyToOne
-    @JoinColumn(name = "nhan_vien_id")
-    private NhanVien nhanVienDangKy;
-
     @PrePersist
-    public void prePersist() {
-        if (this.trangThai) {
-            this.ngayKichHoatBaoHanh = LocalDateTime.now();
+    public void prePersist () {
+        this.ngayKichHoat = LocalDateTime.now();
+        this.ngayHetHan = ngayKichHoat.plusMonths(linhKien.getThoiGianBaoHanh());
+        if (LocalDateTime.now().isEqual(ngayHetHan)) {
+            this.trangThaiBaoHanh = false;
         }
-
-    }
+   }
 
 }

@@ -19,39 +19,34 @@ public class HoaDon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
-    @Column(name = "Mã_Hóa_Đơn")
+    @Column(name = "ma_hoa_don", unique = true)
     private String maHoaDon;
-    @Column(name = "Số_Lượng")
+    @Column(name = "so_luong")
     private Integer soLuong;
-    @Column(name = "Giá_Tiền")
-    private double giaTien;
-    @Column(name = "Thành_Tiền")
+    @Column(name = "thanh_tien")
     private double thanhTien;
-    @Column(name = "Ngày_Bắt_Đầu_Bảo_Hành")
-    private LocalDateTime ngayBatDauBaoHanh;
-    @Column(name = "Ngày_Kết_Thúc_Bảo_Hành")
-    private LocalDateTime ngayKetThucBaoHanh;
-    @Column(name = "Ngày_Tạo_Hóa_Đơn")
+    @Column(name = "ngay_tao_hoa_don")
     private LocalDateTime ngayTaoHoaDon;
 
 
-
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "khach_hang_id")
     private KhachHang khachHang;
 
-    @ManyToOne
-    @JoinColumn(name = "bao_hanh_id")
-    private BaoHanh baoHanh;
 
     @OneToMany(mappedBy = "hoaDon", orphanRemoval = true)
     private List<SanPham> sanPhams = new ArrayList<>();
 
-    @PrePersist
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "nguoi_tao_hoa_don_id")
+    private User nguoiTaoHoaDon;
+
+    @OneToMany(mappedBy = "hoaDon", orphanRemoval = true)
+    private List<BaoHanh> baoHanhs = new ArrayList<>();
+
+    @PrePersist()
     public void prePersist() {
         this.ngayTaoHoaDon = LocalDateTime.now();
-        this.ngayBatDauBaoHanh = baoHanh.getNgayKichHoatBaoHanh();
-        this.ngayKetThucBaoHanh = ngayBatDauBaoHanh.plusDays(baoHanh.getThoiGianBaoHanh());
     }
 
 }

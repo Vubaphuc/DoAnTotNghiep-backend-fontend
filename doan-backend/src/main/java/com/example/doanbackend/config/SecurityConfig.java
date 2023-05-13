@@ -11,6 +11,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -19,8 +20,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import java.time.LocalDateTime;
+import java.util.Random;
+
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity(
+        securedEnabled = true,
+        jsr250Enabled = true
+)
 public class SecurityConfig {
 
     @Autowired
@@ -34,7 +42,6 @@ public class SecurityConfig {
 
     @Autowired
     private CustomAccessDeniedHandler customAccessDeniedHandler;
-
 
 
     @Bean
@@ -60,9 +67,29 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain (HttpSecurity http) throws Exception {
 
         String [] PUBLIC = {
-                "/api/v1/public/**",
-                "/",
-                "/api/v1/login-handle"
+                "/login",
+                "/nhan-vien/**"
+        };
+
+        String [] NHANVIENLETAN = {
+                "/dang-ky/**",
+                "/le-tan/san-pham/**",
+                "/le-tan/**"
+        };
+        String [] NHANVIENSUACHUA = {
+                "/nhan-vien-sua-chua/**"
+        };
+        String [] NHANVIENKHO = {
+                "/nhan-vien-kho/**"
+        };
+        String [] NHANVIENBAOHANH = {
+                ""
+        };
+        String [] QUANLY = {
+                ""
+        };
+        String [] ADMIN = {
+                ""
         };
 
 
@@ -72,6 +99,12 @@ public class SecurityConfig {
                 .csrf().disable()
                 .authorizeHttpRequests()
                 .requestMatchers(PUBLIC).permitAll()
+                .requestMatchers(NHANVIENLETAN).hasRole("NHANVIENLETAN")
+                .requestMatchers(NHANVIENSUACHUA).hasRole("NHANVIENSUACHUA")
+                .requestMatchers(NHANVIENBAOHANH).hasRole("NHANVIENBAOHANH")
+                .requestMatchers(NHANVIENKHO).hasRole("NHANVIENKHO")
+                .requestMatchers(QUANLY).hasRole("QUANLY")
+                .requestMatchers(ADMIN).hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()

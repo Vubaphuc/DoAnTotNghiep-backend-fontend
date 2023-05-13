@@ -28,7 +28,7 @@ public class Image {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 

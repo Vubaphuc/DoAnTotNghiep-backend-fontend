@@ -1,13 +1,13 @@
-// Lưu dữ liệu vào trong localStorage
+// Lưu dữ liệu vào trong sessionStorage
 export const setData = (key, value) => {
-    localStorage.setItem(key, JSON.stringify(value));
+    sessionStorage.setItem(key, JSON.stringify(value));
 }
 
-// Lấy dữ liệu từ trong localStorage
+// Lấy dữ liệu từ trong sessionStorage
 export const getData = (key) => {
-    const localStorageValue = localStorage.getItem(key);
-    if (localStorageValue) {
-        return JSON.parse(localStorageValue);
+    const sessionStorageValue = sessionStorage.getItem(key);
+    if (sessionStorageValue) {
+        return JSON.parse(sessionStorageValue);
     }
     return null;
 }

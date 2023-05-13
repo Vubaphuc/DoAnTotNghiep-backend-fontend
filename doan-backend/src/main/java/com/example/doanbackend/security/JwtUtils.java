@@ -1,9 +1,14 @@
 package com.example.doanbackend.security;
 
+import com.example.doanbackend.entity.Role;
+import com.example.doanbackend.entity.User;
+import com.example.doanbackend.exception.NotFoundException;
+import com.example.doanbackend.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -11,6 +16,7 @@ import org.springframework.stereotype.Component;
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -20,10 +26,13 @@ public class JwtUtils {
     @Value("${application.security.jwt.expiration}")
     private long jwtExpiration;
 
+    @Autowired
+    UserRepository userRepository;
+
     //  Tạo token từ thông tin của user
     public String generateToken (UserDetails userDetails) {
         Map<String, Object> extraClaims = new HashMap<>();
-        extraClaims.put("authorities", userDetails.getAuthorities());
+
         return Jwts.builder()
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())

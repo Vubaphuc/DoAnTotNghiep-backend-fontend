@@ -33,7 +33,7 @@ public class AuthController {
     @Autowired
     private UserRepository userRepository;
 
-    @PostMapping("login-handle")
+    @PostMapping("login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request, HttpSession session) {
         // Tạo đối tượng xác thực
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(

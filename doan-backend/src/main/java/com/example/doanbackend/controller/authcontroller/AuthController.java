@@ -1,6 +1,7 @@
 package com.example.doanbackend.controller.authcontroller;
 
 import com.example.doanbackend.entity.User;
+import com.example.doanbackend.exception.NotFoundException;
 import com.example.doanbackend.mapper.UserMapper;
 import com.example.doanbackend.repository.UserRepository;
 import com.example.doanbackend.request.LoginRequest;
@@ -34,7 +35,7 @@ public class AuthController {
     private UserRepository userRepository;
 
     @PostMapping("login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest request, HttpSession session) {
+    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
         // Tạo đối tượng xác thực
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                 request.getEmail(),
@@ -57,7 +58,9 @@ public class AuthController {
             String jwtToken = jwtUtils.generateToken(userDetails);
 
             // Tìm kiếm user
-            User user = userRepository.findUsersByEmail(authentication.getName()).orElse(null);
+            User user = userRepository.findUsersByEmail(authentication.getName()).orElseThrow(() -> {
+                throw new NotFoundException("Không tìm thấy tài khoản nào có gmail là " + authentication.getName());
+            });
 
 
             return ResponseEntity.ok(new AuthResponse(

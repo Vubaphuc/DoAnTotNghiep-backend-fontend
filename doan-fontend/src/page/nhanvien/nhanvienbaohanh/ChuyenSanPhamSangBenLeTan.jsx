@@ -1,36 +1,33 @@
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Select from "react-select";
-import { getNhanViens } from "../../../options/options";
-import { useSanPhamTheoIdQuery } from "../../../../app/apis/nhanvienletanApi/sanPhamApi";
-import hookCapNhatThongTinNhanVienSuaChua from "../../../hook/hookNhanvien/hookNhanVienLeTan/hookCapNhatThongTinNhanVienSuaChua";
-import useFetchNhanVienQuery from "../../../hook/hookNhanvien/useFetchNhanVienQurey";
+import hookDangKyNhanVienLeTan from "../../hook/hookNhanvien/hookNhanVienBaoHanh/hookDangKyNhanVienLeTan";
+import useFetchNhanVienQuery from "../../hook/hookNhanvien/useFetchNhanVienQurey";
+import { getNhanViens } from "../../options/options";
 
-function DangKyNhanVienSuaChuaPage() {
+function ChuyenSanPhamSangBenLeTan() {
 
-  const { sanPhamId } = useParams();
+  const { control, handleSubmit, errors, register, onDangKyNhanVienLeTan } = hookDangKyNhanVienLeTan();
 
-  const { control, handleSubmit, errors, onCapNhatNhanVien } = hookCapNhatThongTinNhanVienSuaChua(sanPhamId);
-
-  const { suaChuaData, suaChuaLoading } = useFetchNhanVienQuery();
-  const { data: sanPhamData, isLoading: sanPhamLoading } = useSanPhamTheoIdQuery(sanPhamId);
-
-  if (suaChuaLoading || sanPhamLoading) {
-    return <h2>Loading....</h2>
+  const { leTanData, leTanLoading } = useFetchNhanVienQuery();
+  if (leTanLoading) {
+    return <h2>Loading...</h2>
   }
+  const nhanVienOptions = getNhanViens(leTanData.data);
 
-  const danhSachNhanVienSuaChuaOptions = getNhanViens(suaChuaData);
- 
 
   return (
     <>
       <section className="content">
         <div className="container-fluid">
-          <form onSubmit={handleSubmit(onCapNhatNhanVien)}>
+          <form onSubmit={handleSubmit(onDangKyNhanVienLeTan)}>
             <div className="row py-2">
               <div className="col-6">
-                <Link to={"/nhan-vien/le-tan/dk-sc"} className="btn btn-default">
+                <Link
+                  to={"/nhan-vien/le-tan/dk-sc"}
+                  className="btn btn-default"
+                >
                   <i className="fas fa-chevron-left"></i> Quay lại
                 </Link>
                 <button type="submit" className="btn btn-info px-4">
@@ -51,8 +48,7 @@ function DangKyNhanVienSuaChuaPage() {
                             type="text"
                             className="form-control"
                             id="hang-san-pham"
-                            defaultValue={sanPhamData?.hangSanXuat}
-                            disabled
+                            readOnly
                           />
                         </div>
                         <div className="form-group">
@@ -61,8 +57,7 @@ function DangKyNhanVienSuaChuaPage() {
                             type="text"
                             className="form-control"
                             id="model"
-                            defaultValue={sanPhamData?.model}
-                            disabled
+                            readOnly
                           />
                         </div>
                         <div className="form-group">
@@ -71,8 +66,7 @@ function DangKyNhanVienSuaChuaPage() {
                             type="text"
                             className="form-control"
                             id="so-IME"
-                            defaultValue={sanPhamData?.ime}
-                            disabled
+                            readOnly
                           />
                         </div>
                         <div className="form-group">
@@ -81,15 +75,14 @@ function DangKyNhanVienSuaChuaPage() {
                             type="text"
                             className="form-control"
                             id="ten-loi"
-                            defaultValue={sanPhamData?.ten_loi}
-                            disabled
+                            readOnly
                           />
                         </div>
                       </div>
                       <div className="col-md-5">
-                        <h4 className="mb-4">Thông Tin Nhân Viên Sửa Chữa</h4>
+                        <h4 className="mb-4">Thông Tin Nhân Viên Lễ Tân</h4>
                         <div className="form-group">
-                          <label className="mb-3">Nhân Viên Sửa Chữa</label>
+                          <label className="mb-3">Nhân Viên Lễ Tân</label>
                           <Controller
                             name="maNhanVien"
                             control={control}
@@ -98,10 +91,10 @@ function DangKyNhanVienSuaChuaPage() {
                                 <Select
                                   {...field}
                                   placeholder="--Chọn Nhân Viên--"
-                                  options={danhSachNhanVienSuaChuaOptions}
-                                  value={danhSachNhanVienSuaChuaOptions.find(
-                                    (c) => c.value === field.value
-                                  )}
+                                  options={nhanVienOptions}
+                                  value={nhanVienOptions.find((c) => 
+                                    c.value === field.value 
+                                    )}
                                   onChange={(val) => field.onChange(val.value)}
                                 />
                               </div>
@@ -121,4 +114,4 @@ function DangKyNhanVienSuaChuaPage() {
   );
 }
 
-export default DangKyNhanVienSuaChuaPage;
+export default ChuyenSanPhamSangBenLeTan;

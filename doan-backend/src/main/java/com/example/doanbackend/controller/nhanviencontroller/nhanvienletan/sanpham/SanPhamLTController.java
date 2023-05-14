@@ -27,7 +27,8 @@ public class SanPhamLTController {
     // cập nhật thông tin nhân viên sửa chữa
     @PutMapping("cap-nhat/{id}")
     public ResponseEntity<?> capNhatThongTinNhanVienSuaChua(@RequestBody CapNhatThongTinNhanVienSuaChua capNhatThongTinNhanVienSuaChua,@PathVariable Integer id) {
-        return ResponseEntity.ok(sanPhamLTService.capNhatThongTinNhanVienSuaChua(capNhatThongTinNhanVienSuaChua, id));
+        sanPhamLTService.capNhatThongTinNhanVienSuaChua(capNhatThongTinNhanVienSuaChua, id);
+        return ResponseEntity.noContent().build();
     }
 
     // lấy ra danh sách sản phẩm sửa ok

@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import { Link } from "react-router-dom";
-import danhSachLayTuApi from "./danhSachLayTuApi/danhSachLayTuApi";
 import { useLazyDanhSachSanPhamOKNVLTQuery } from "../../../app/apis/nhanvienletanApi/sanPhamApi";
 
 function NhanVienLeTanPage() {
+  const [status, setStatus] = useState("KHACHHANG");
+
   const [getSanPham, { data: sanPhamData, isLoading: sanPhamLoading }] =
     useLazyDanhSachSanPhamOKNVLTQuery();
 
@@ -24,28 +25,43 @@ function NhanVienLeTanPage() {
   const handlePageClick = (page) => {
     getSanPham({
       page: page.selected + 1,
-      pageSize: 10
-    })
+      pageSize: 10,
+    });
   };
+
+  const handleStatusChange = (e) => {
+    setStatus(e.target.value)
+  }
 
   return (
     <>
       <section className="content">
         <div className="container-fluid">
-          <div className="row py-2">
-            <div className="col-12">
-              <Link to={"/"} className="btn btn-primary">
-                <i className="fas fa-plus"></i> Viết bài
-              </Link>
-              <Link to={"/"} className="btn btn-info">
-                <i className="fas fa-redo"></i> Refresh
-              </Link>
-            </div>
+          <div class="search-container">
+            <input
+              className="input-search mb-4"
+              type="text"
+              placeholder="Tìm kiếm..."
+            />
           </div>
           <div className="row">
             <div className="col-12">
               <div className="card">
                 <div className="card-body">
+                  <div className="btn-lua-chon">
+                    <label htmlFor="statusSelect" className="mb-2">
+                      Trạng Thái:
+                    </label>
+                    <select
+                      id="statusSelect"
+                      className="form-control"
+                      value={status}
+                      onChange={handleStatusChange}
+                    >
+                      <option value="KHACHHANG">Khách Hàng</option>
+                      <option value="BAOHANH">Bảo Hành</option>
+                    </select>
+                  </div>
                   <table className="table table-bordered table-hover">
                     <thead>
                       <tr>
@@ -61,12 +77,13 @@ function NhanVienLeTanPage() {
                       </tr>
                     </thead>
                     <tbody>
-                      {sanPhamData &&
+                      {status === "KHACHHANG" &&
+                        sanPhamData &&
                         sanPhamData.data.map((sanPham) => (
                           <tr key={sanPham.id}>
                             <td>
                               <Link
-                                to={"/nhan-vien/le-tan/hd-bh"}
+                                to={`/nhan-vien/le-tan/hd-bh/${sanPham.id}`}
                                 className="text-decoration-none"
                               >
                                 {sanPham?.model}
@@ -74,7 +91,7 @@ function NhanVienLeTanPage() {
                             </td>
                             <td>
                               <Link
-                                to={"/nhan-vien/le-tan/hd-bh"}
+                                to={`/nhan-vien/le-tan/hd-bh/${sanPham.id}`}
                                 className="text-decoration-none"
                               >
                                 {sanPham?.hangSanXuat}

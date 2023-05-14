@@ -32,10 +32,6 @@ public class BaoHanh {
     @JoinColumn(name = "linh_kien_id")
     private LinhKien linhKien;
 
-    @ManyToOne
-    @JoinColumn(name = "hoa_don_id")
-    private HoaDon hoaDon;
-
     @OneToOne(orphanRemoval = true)
     @JoinColumn(name = "san_pham_id")
     private SanPham sanPham;
@@ -43,6 +39,10 @@ public class BaoHanh {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "khach_hang_id")
     private KhachHang khachHang;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User nguoiKichHoatBaoHanh;
 
     @PrePersist
     public void prePersist () {

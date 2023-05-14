@@ -1,35 +1,40 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import { Link } from "react-router-dom";
-import danhSachLayTuApi from "../danhSachLayTuApi/danhSachLayTuApi";
+import { useLazyDanhSachSanPhamChuaSuaQuery } from "../../../../app/apis/nhanvienletanApi/sanPhamApi";
 
 function DanhSachSanPhamChuaSuaChua() {
-  const { sanPhamChuaSuaData, isLoading, sanPhamChuaSua } = danhSachLayTuApi();
+  const [getSanPam, { data: sanPhamChuaSuaData, isLoading }] =
+    useLazyDanhSachSanPhamChuaSuaQuery();
+
+  useEffect(() => {
+    getSanPam({
+      page: 1,
+      pageSize: 10,
+    });
+  }, []);
 
   if (isLoading) {
-    return <h2>Loading....</h2>;
+    return <h2>Loading...</h2>;
   }
 
   const handlePageClick = (page) => {
-    sanPhamChuaSua({
+    getSanPam({
       page: page.selected + 1,
-      pageSize: 10
-    })
+      pageSize: 10,
+    });
   };
 
   return (
     <>
       <section className="content">
         <div className="container-fluid">
-          <div className="row py-2">
-            <div className="col-12">
-              <Link to={"/"} className="btn btn-primary">
-                <i className="fas fa-plus"></i> Viết bài
-              </Link>
-              <Link to={"/"} className="btn btn-info">
-                <i className="fas fa-redo"></i> Refresh
-              </Link>
-            </div>
+          <div class="search-container">
+            <input
+              className="input-search mb-4"
+              type="text"
+              placeholder="Tìm kiếm..."
+            />
           </div>
           <div className="row">
             <div className="col-12">
@@ -49,12 +54,18 @@ function DanhSachSanPhamChuaSuaChua() {
                         sanPhamChuaSuaData.data.map((sanPham) => (
                           <tr key={sanPham.id}>
                             <td>
-                              <Link to={`/nhan-vien/le-tan/dk-sc/${sanPham.id}`} className="text-decoration-none">
+                              <Link
+                                to={`/nhan-vien/le-tan/dk-sc/${sanPham.id}`}
+                                className="text-decoration-none"
+                              >
                                 {sanPham.model}
                               </Link>
                             </td>
                             <td>
-                              <Link to={`/nhan-vien/le-tan/dk-sc/${sanPham.id}`} className="text-decoration-none">
+                              <Link
+                                to={`/nhan-vien/le-tan/dk-sc/${sanPham.id}`}
+                                className="text-decoration-none"
+                              >
                                 {sanPham.hangSanXuat}
                               </Link>
                             </td>

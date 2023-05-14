@@ -11,6 +11,8 @@ import { oderVatLieuNVKApi } from "./apis/nhanvienkhoApis/oderVatLieuNVKApi";
 import { vatLieuApi } from "./apis/nhanvienkhoApis/vatLieuNVKApi";
 import { venderNVKApi } from "./apis/nhanvienkhoApis/venderNVKApi";
 import { vatLieuNVSCApi } from "./apis/nhanviensuachuaApis/vatLieuNVSCApi";
+import { hoaDonNVLTApi } from "./apis/nhanvienletanApi/hoaDonNVLTApi";
+import { nhanVienBaoHanhApi } from "./apis/nhanVienBaoHanh/nhanVienBaoHanhApi";
 
 // Context API + useReducer có thể thay thế cho redux
 const store = configureStore({
@@ -27,7 +29,9 @@ const store = configureStore({
         [oderVatLieuNVKApi.reducerPath]: oderVatLieuNVKApi.reducer,
         [vatLieuApi.reducerPath]: vatLieuApi.reducer,
         [venderNVKApi.reducerPath]: venderNVKApi.reducer,
-        [vatLieuNVSCApi.reducerPath]: vatLieuNVSCApi.reducer
+        [vatLieuNVSCApi.reducerPath]: vatLieuNVSCApi.reducer,
+        [hoaDonNVLTApi.reducerPath]: hoaDonNVLTApi.reducer,
+        [nhanVienBaoHanhApi.reducerPath]: nhanVienBaoHanhApi.reducer
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat(
@@ -42,7 +46,9 @@ const store = configureStore({
             oderVatLieuNVKApi.middleware,
             vatLieuApi.middleware,
             venderNVKApi.middleware,
-            vatLieuNVSCApi.middleware
+            vatLieuNVSCApi.middleware,
+            hoaDonNVLTApi.middleware,
+            nhanVienBaoHanhApi.middleware
         ),
 });
 

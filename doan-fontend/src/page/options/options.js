@@ -23,7 +23,7 @@ export const getRoles = (roles) => {
   });
 }
 
-export const getNhanVienSuaChuas = (nhanviens) => {
+export const getNhanViens = (nhanviens) => {
   if (!nhanviens) {
     return [];
   }

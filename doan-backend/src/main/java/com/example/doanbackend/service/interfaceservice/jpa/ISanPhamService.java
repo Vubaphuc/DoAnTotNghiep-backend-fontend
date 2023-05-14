@@ -1,9 +1,6 @@
 package com.example.doanbackend.service.interfaceservice.jpa;
 
-import com.example.doanbackend.dto.DanhSachKhachHangCoSanPhamNVLT;
-import com.example.doanbackend.dto.DanhSachSanPhamNVSCDto;
-import com.example.doanbackend.dto.DanhSachSanPhamOkDtoNVLT;
-import com.example.doanbackend.dto.SanPhamChuaSuaDto;
+import com.example.doanbackend.dto.*;
 import com.example.doanbackend.entity.KhachHang;
 import com.example.doanbackend.entity.SanPham;
 import org.springframework.data.domain.Page;
@@ -34,5 +31,10 @@ public interface ISanPhamService {
 
     Page<DanhSachKhachHangCoSanPhamNVLT> getDanhSachKhachHangCoSanPhamOK(Integer page, Integer pageSize);
     Page<DanhSachKhachHangCoSanPhamNVLT> getDanhSachKhachHangCoSanPhamPending(Integer page, Integer pageSize);
+
+    HoaDonSanPhamDto layChiTietSanPhamOKTheoID(Integer id);
+
+    Page<DanhSachKhachHangCoSanPhamNVLT> timKiemSanPhamTheoTenKhachHangOK(String tenKhachHang,int page,int pageSize);
+    Page<DanhSachKhachHangCoSanPhamNVLT> timKiemSanPhamTheoTenKhachHangPeding(String tenKhachHang,int page,int pageSize);
 
 }

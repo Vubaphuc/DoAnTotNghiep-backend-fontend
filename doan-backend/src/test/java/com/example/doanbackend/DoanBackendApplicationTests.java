@@ -267,11 +267,16 @@ class DoanBackendApplicationTests {
         thongTinLeTanRepository.save(thongTinLeTan9);
         thongTinLeTanRepository.save(thongTinLeTan10);
 
+        LinhKien linhKien1 = linhKienRepository.findById(1).orElse(null);
+        LinhKien linhKien2 = linhKienRepository.findById(8).orElse(null);
+        LinhKien linhKien3 = linhKienRepository.findById(11).orElse(null);
+        LinhKien linhKien4 = linhKienRepository.findById(13).orElse(null);
+
         // null, nguyên nhân lỗi, null, vị trí sửa, chú thích, nhân viên sửa.
-        ThongTinSuaChua thongTinSuaChua1 = new ThongTinSuaChua(null,"Tối LCD", null, "LCD",null,nhanVienSuaChua1 );
-        ThongTinSuaChua thongTinSuaChua2 = new ThongTinSuaChua(null,"Không ÂM Loa Ngoài", null, "SPK",null,nhanVienSuaChua1 );
-        ThongTinSuaChua thongTinSuaChua3 = new ThongTinSuaChua(null,"Không vào được camera sau", null, "Camera Tele",null,nhanVienSuaChua2 );
-        ThongTinSuaChua thongTinSuaChua4 = new ThongTinSuaChua(null,"Không vào được camera trước", null, "Front Camera",null,nhanVienSuaChua2 );
+        ThongTinSuaChua thongTinSuaChua1 = new ThongTinSuaChua(null,"Tối LCD", null, "LCD",null,nhanVienSuaChua1,linhKien1 );
+        ThongTinSuaChua thongTinSuaChua2 = new ThongTinSuaChua(null,"Không ÂM Loa Ngoài", null, "SPK",null,nhanVienSuaChua1,linhKien2 );
+        ThongTinSuaChua thongTinSuaChua3 = new ThongTinSuaChua(null,"Không vào được camera sau", null, "Camera Tele",null,nhanVienSuaChua2,linhKien3 );
+        ThongTinSuaChua thongTinSuaChua4 = new ThongTinSuaChua(null,"Không vào được camera trước", null, "Front Camera",null,nhanVienSuaChua2,linhKien4 );
 
         thongTinSuaChuaRepository.save(thongTinSuaChua1);
         thongTinSuaChuaRepository.save(thongTinSuaChua2);

@@ -39,6 +39,8 @@ import DanhSachVatLieuConHangPage from "./page/nhanvien/nhanviensuachua/DanhSach
 import OderVatLieuNVSCPage from "./page/nhanvien/nhanviensuachua/OderVatLieuNVSCPage";
 import DanhSachStatusOrderPage from "./page/nhanvien/nhanviensuachua/DanhSachStatusOrderPage";
 import ChiTietOrderPage from "./page/nhanvien/nhanviensuachua/ChiTietOrderPage";
+import DangKySanPhamBaoHanhPage from "./page/nhanvien/nhanvienbaohanh/DangKySanPhamBaoHanhPage";
+import ChuyenSanPhamSangBenLeTan from "./page/nhanvien/nhanvienbaohanh/ChuyenSanPhamSangBenLeTan";
 
 function App() {
   return (
@@ -58,7 +60,7 @@ function App() {
                 <Route path="ds-kh" element={<DanhSachKhachHangPage />} />
                 <Route path="dk-kh" element={<DangKyKhachHangPage />} />
                 <Route path="tk-kh" element={<TimKiemKhachHangPage />} />
-                <Route path="hd-bh" element={<HoaDonVaBaoHanhPage />} />
+                <Route path="hd-bh/:sanPhamId" element={<HoaDonVaBaoHanhPage />} />
                 <Route path="them-sp" element={<ThemSanPhamPage />} />
               </Route>
 
@@ -103,6 +105,8 @@ function App() {
                 element={<AuthorizeRoutes requireRoles={["NHANVIENBAOHANH"]} />}
               >
                 <Route index element={<NhanVienBaoHanhPage />} />
+                <Route path="dang-ky" element={<DangKySanPhamBaoHanhPage />} />
+                <Route path="chuyen" element={<ChuyenSanPhamSangBenLeTan />} />
               </Route>
             </Route>
 

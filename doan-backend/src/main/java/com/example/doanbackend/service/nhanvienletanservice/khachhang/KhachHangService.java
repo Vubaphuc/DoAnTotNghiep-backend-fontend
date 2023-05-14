@@ -55,4 +55,27 @@ public class KhachHangService {
                 sanPhams.getContent()
         );
     }
+
+    // tìm kiếm san phẩm theo tên khách hang
+    public PageDanhSachKhachHangCoSanPham timKiemSanPhamTheoTenKhachHangOK(String tenKhachHang,int page, int pageSize) {
+        Page<DanhSachKhachHangCoSanPhamNVLT> sanPhamNVLTS = entitySanPhamService.timKiemSanPhamTheoTenKhachHangOK(tenKhachHang,page,pageSize);
+        return new PageDanhSachKhachHangCoSanPham(
+                sanPhamNVLTS.getNumber() + 1,
+                sanPhamNVLTS.getSize(),
+                sanPhamNVLTS.getTotalPages(),
+                (int) Math.ceil(sanPhamNVLTS.getTotalElements()),
+                sanPhamNVLTS.getContent()
+        );
+    }
+
+    public PageDanhSachKhachHangCoSanPham timKiemSanPhamTheoTenKhachHangPending(String tenKhachHang,int page, int pageSize) {
+        Page<DanhSachKhachHangCoSanPhamNVLT> sanPhamNVLTS = entitySanPhamService.timKiemSanPhamTheoTenKhachHangPeding(tenKhachHang,page,pageSize);
+        return new PageDanhSachKhachHangCoSanPham(
+                sanPhamNVLTS.getNumber() + 1,
+                sanPhamNVLTS.getSize(),
+                sanPhamNVLTS.getTotalPages(),
+                (int) Math.ceil(sanPhamNVLTS.getTotalElements()),
+                sanPhamNVLTS.getContent()
+        );
+    }
 }

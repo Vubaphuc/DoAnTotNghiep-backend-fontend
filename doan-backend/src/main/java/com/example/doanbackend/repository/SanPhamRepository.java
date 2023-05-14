@@ -1,9 +1,6 @@
 package com.example.doanbackend.repository;
 
-import com.example.doanbackend.dto.DanhSachKhachHangCoSanPhamNVLT;
-import com.example.doanbackend.dto.DanhSachSanPhamNVSCDto;
-import com.example.doanbackend.dto.DanhSachSanPhamOkDtoNVLT;
-import com.example.doanbackend.dto.SanPhamChuaSuaDto;
+import com.example.doanbackend.dto.*;
 import com.example.doanbackend.entity.KhachHang;
 import com.example.doanbackend.entity.SanPham;
 import org.springframework.data.domain.Page;
@@ -48,11 +45,8 @@ public interface SanPhamRepository extends JpaRepository<SanPham, Integer> {
     @Query("select new com.example.doanbackend.dto.DanhSachSanPhamOkDtoNVLT" +
             "(s.id,s.model,s.hangSanXuat,s.IME,s.tenLoi,s.thongTinSuaChua.viTriSua,s.trangThai, s.soLuong,s.giaTien,s.thanhTien) " +
             "from SanPham s " +
-            "where s.trangThai = :trangThai")
+            "where s.trangThai = :trangThai and s.hoaDon = null ")
     Page<DanhSachSanPhamOkDtoNVLT> danhSachSanPhamDaSuaChuaOK_NVLT(Pageable pageable, @Param("trangThai") String trangThai);
-
-    @Query("select count(s) from SanPham s where s.khachHang = ?1 and s.trangThai = ?2")
-    Integer countByKhachHang(KhachHang khachHang, String trangThai);
 
 
     @Query("select new com.example.doanbackend.dto.DanhSachKhachHangCoSanPhamNVLT" +
@@ -69,5 +63,24 @@ public interface SanPhamRepository extends JpaRepository<SanPham, Integer> {
             "group by s.khachHang")
     Page<DanhSachKhachHangCoSanPhamNVLT> getDanhSachKhachHangCoSanPhamOK(Pageable pageable);
 
+    @Query("select new com.example.doanbackend.dto.HoaDonSanPhamDto" +
+            "(s.id ,s.khachHang.fullName, s.khachHang.phoneNumber, s.khachHang.email, s.hangSanXuat, s.model, s.IME,s.tenLoi,s.thongTinSuaChua.viTriSua, s.thongTinSuaChua.linhKien.name, s.thongTinSuaChua.linhKien.thoiGianBaoHanh, s.soLuong,s.giaTien,s.thanhTien) " +
+            "from SanPham s where s.trangThai = 'OK' and s.id = ?1")
+    Optional<HoaDonSanPhamDto> chiTietSanPhamDaSuaOK(Integer id);
+
+
+    @Query("select new com.example.doanbackend.dto.DanhSachKhachHangCoSanPhamNVLT(kh.maKhachHang, kh.fullName, kh.phoneNumber, kh.email,count (kh.id) ,s.trangThai) " +
+            "from SanPham s " +
+            "join s.khachHang kh " +
+            "where s.trangThai = 'OK' and kh.fullName like %?1% " +
+            "group by kh.id")
+    Page<DanhSachKhachHangCoSanPhamNVLT> timKiemSanPhamTheoTenKhachHangOK(Pageable pageable,String tenKhachHang);
+
+    @Query("select new com.example.doanbackend.dto.DanhSachKhachHangCoSanPhamNVLT(kh.maKhachHang, kh.fullName, kh.phoneNumber, kh.email,count (kh.id) ,s.trangThai) " +
+            "from SanPham s " +
+            "join s.khachHang kh " +
+            "where s.trangThai = 'PENDING' and kh.fullName like %?1% " +
+            "group by kh.id")
+    Page<DanhSachKhachHangCoSanPhamNVLT> timKiemSanPhamTheoTenKhachHangPending(Pageable pageable,String tenKhachHang);
 
 }

@@ -7,6 +7,7 @@ import com.example.doanbackend.dto.SanPhamChuaSuaDto;
 import com.example.doanbackend.entity.SanPham;
 import com.example.doanbackend.entity.ThongTinSuaChua;
 import com.example.doanbackend.entity.User;
+import com.example.doanbackend.exception.BadRequestException;
 import com.example.doanbackend.request.CapNhatThongTinNhanVienSuaChua;
 import com.example.doanbackend.service.jpaservice.EntitySanPhamService;
 import com.example.doanbackend.service.jpaservice.EntityThongTinSuaChuaService;
@@ -42,7 +43,7 @@ public class SanPhamLTService {
         return entitySanPhamService.layChiTietSanPhamTheoId(id);
     }
 
-    public String capNhatThongTinNhanVienSuaChua(CapNhatThongTinNhanVienSuaChua capNhatThongTinNhanVienSuaChua, Integer id) {
+    public void capNhatThongTinNhanVienSuaChua(CapNhatThongTinNhanVienSuaChua capNhatThongTinNhanVienSuaChua, Integer id) {
 
 
 
@@ -54,7 +55,7 @@ public class SanPhamLTService {
 
         SanPham sanPham = entitySanPhamService.layRaSanPhamTheoId(id);
         if (sanPham.getThongTinSuaChua() != null) {
-            return "Sản Phẩm đã đăng ký người sửa";
+            throw new BadRequestException("Sản phẩm đã đăng ký người sửa");
         }
 
         thongTinSuaChuaService.save(thongTinSuaChua);
@@ -64,7 +65,6 @@ public class SanPhamLTService {
 
         entitySanPhamService.save(sanPham);
 
-        return "Đăng ký nhân viên sửa chữa thành công";
     }
 
     public PageDanhSachSanPhamOKNVLT danhSachSanPhamDaSuaChuaOK(int page, int pageSize) {

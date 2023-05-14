@@ -83,7 +83,7 @@ public class SecurityConfig {
                 "/nhan-vien-kho/**"
         };
         String [] NHANVIENBAOHANH = {
-                ""
+                "/bao-hanh/**"
         };
         String [] QUANLY = {
                 ""

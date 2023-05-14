@@ -41,9 +41,6 @@ public class HoaDon {
     @JoinColumn(name = "nguoi_tao_hoa_don_id")
     private User nguoiTaoHoaDon;
 
-    @OneToMany(mappedBy = "hoaDon", orphanRemoval = true)
-    private List<BaoHanh> baoHanhs = new ArrayList<>();
-
     @PrePersist()
     public void prePersist() {
         this.ngayTaoHoaDon = LocalDateTime.now();

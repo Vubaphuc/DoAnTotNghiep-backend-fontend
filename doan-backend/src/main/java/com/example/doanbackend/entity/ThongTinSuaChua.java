@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -26,15 +28,21 @@ public class ThongTinSuaChua {
     private String viTriSua;
     @Column(name = "chu_thich")
     private String chuThich;
+
+
     @ManyToOne
     @JoinColumn(name = "nhan_vien_sua_chua_id")
     private User nhanVienSuaChua;
+
+    @ManyToOne
+    @JoinColumn(name = "linh_kien_id")
+    private LinhKien linhKien;
 
     @PostUpdate
     public void postUpdate() {
         this.ngayHoanThanh = LocalDateTime.now();
     }
 
-    // null, nguyên nhân lỗi, null, vị trí sửa, chú thích, nhân viên sửa.
+
 
 }

@@ -26,4 +26,5 @@ public class LinhKien {
     @OneToMany(mappedBy = "linhKien", orphanRemoval = true, fetch = FetchType.LAZY)
     private List<VatLieu> vatLieus = new ArrayList<>();
 
+
 }

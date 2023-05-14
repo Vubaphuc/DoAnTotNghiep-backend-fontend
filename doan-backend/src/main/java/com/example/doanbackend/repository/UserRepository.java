@@ -1,8 +1,11 @@
 package com.example.doanbackend.repository;
 
+import com.example.doanbackend.dto.NhanVienDto;
 import com.example.doanbackend.dto.userdto.NhanVienSuaChuaDto;
 import com.example.doanbackend.dto.userdto.UserDto;
 import com.example.doanbackend.entity.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -17,6 +20,9 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     @Query("select new com.example.doanbackend.dto.userdto.NhanVienSuaChuaDto(u.id, u.maNhanVien, u.fullName) from User u where u.loaiNhanVien.name = ?1")
     List<NhanVienSuaChuaDto> layDanhSachNhanVienSuaChua(String loaiNhanVien);
+
+    @Query("select new com.example.doanbackend.dto.NhanVienDto(u.maNhanVien, u.fullName) from User u left join u.roles rl where rl.name = 'NHANVIENLETAN'")
+    Page<NhanVienDto> danhSachNhanVienLeTanCoPhanTrang(Pageable pageable);
 
 
 }

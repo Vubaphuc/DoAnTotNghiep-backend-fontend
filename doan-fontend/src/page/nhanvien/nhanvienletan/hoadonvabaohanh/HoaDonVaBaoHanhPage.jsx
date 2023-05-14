@@ -1,12 +1,28 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Select from "react-select";
 import hookTaoHoaDonSanPham from "../../../hook/hookNhanvien/hookNhanVienLeTan/hookTaoHoaDonSanPham";
+import { useChiTietSanPhamOKQuery } from "../../../../app/apis/nhanvienletanApi/hoaDonNVLTApi";
 
 function HoaDonVaBaoHanhPage() {
-  const { control, register, handleSubmit,setValue, watch, errors, onTaoHoaDon } =
-    hookTaoHoaDonSanPham();
+  const { sanPhamId } = useParams();
+
+  const id = sanPhamId;
+
+  const { handleSubmit, setValue, onTaoHoaDon } = hookTaoHoaDonSanPham();
+  useEffect(() => {
+    setValue("id", id);
+  }, [id, setValue]);
+
+  const { data: sanPhamData, isLoading: sanPhhamLoading } =
+    useChiTietSanPhamOKQuery(sanPhamId);
+
+  if (sanPhhamLoading) {
+    return <h2>Loading....</h2>;
+  }
+
+  console.log(sanPhamData);
 
   return (
     <>
@@ -19,7 +35,7 @@ function HoaDonVaBaoHanhPage() {
                   <i className="fas fa-chevron-left"></i> Quay lại
                 </Link>
                 <button type="submit" className="btn btn-info px-4">
-                  Lưu
+                  Tạo 
                 </button>
               </div>
             </div>
@@ -32,12 +48,23 @@ function HoaDonVaBaoHanhPage() {
                       <div className="col-md-5">
                         <h4 className="mb-4">Hóa Đơn</h4>
                         <div className="form-group">
+                          <label>Mã Sản Phẩm</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            id="maSanPham"
+                            defaultValue={sanPhamData?.id}
+                            readOnly
+                          />
+                        </div>
+                        <div className="form-group">
                           <label>Họ Và Tên Khách Hàng</label>
                           <input
                             type="text"
                             className="form-control"
                             id="fullNameKH"
-                            {...register("fullNameKH")}
+                            defaultValue={sanPhamData?.fullNameKH}
+                            readOnly
                           />
                         </div>
                         <div className="form-group">
@@ -46,7 +73,8 @@ function HoaDonVaBaoHanhPage() {
                             type="text"
                             className="form-control"
                             id="phoneKH"
-                            {...register("phoneKH")}
+                            defaultValue={sanPhamData?.phoneKH}
+                            readOnly
                           />
                         </div>
                         <div className="form-group">
@@ -55,25 +83,18 @@ function HoaDonVaBaoHanhPage() {
                             type="text"
                             className="form-control"
                             id="emailKH"
-                            {...register("emailKH")}
+                            defaultValue={sanPhamData?.emailKH}
+                            readOnly
                           />
                         </div>
                         <div className="form-group">
-                          <label>Mã Sản Phẩm</label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            id="maSanPham"
-                            {...register("maSanPham")}
-                          />
-                        </div>
-                        <div className="form-group">
-                          <label>Hãng Sản Xuất</label>
+                          <label>Hãng Sản Phẩm</label>
                           <input
                             type="text"
                             className="form-control"
                             id="hangSanPham"
-                            {...register("hangSanPham")}
+                            defaultValue={sanPhamData?.hangSanPham}
+                            readOnly
                           />
                         </div>
                         <div className="form-group">
@@ -82,7 +103,8 @@ function HoaDonVaBaoHanhPage() {
                             type="text"
                             className="form-control"
                             id="model"
-                            {...register("model")}
+                            defaultValue={sanPhamData?.model}
+                            readOnly
                           />
                         </div>
                         <div className="form-group">
@@ -91,7 +113,8 @@ function HoaDonVaBaoHanhPage() {
                             type="text"
                             className="form-control"
                             id="soIME"
-                            {...register("soIME")}
+                            defaultValue={sanPhamData?.soIME}
+                            readOnly
                           />
                         </div>
                         <div className="form-group">
@@ -100,7 +123,8 @@ function HoaDonVaBaoHanhPage() {
                             type="text"
                             className="form-control"
                             id="tenLoi"
-                            {...register("tenLoi")}
+                            defaultValue={sanPhamData?.tenLoi}
+                            readOnly
                           />
                         </div>
                         <div className="form-group">
@@ -109,7 +133,8 @@ function HoaDonVaBaoHanhPage() {
                             type="text"
                             className="form-control"
                             id="viTriSua"
-                            {...register("viTriSua")}
+                            defaultValue={sanPhamData?.viTriSua}
+                            readOnly
                           />
                         </div>
                         <div className="form-group">
@@ -118,7 +143,8 @@ function HoaDonVaBaoHanhPage() {
                             type="text"
                             className="form-control"
                             id="loaiBaoHanh"
-                            {...register("loaiBaoHanh")}
+                            defaultValue={sanPhamData?.loaiBaoHanh}
+                            readOnly
                           />
                         </div>
                         <div className="form-group">
@@ -127,7 +153,8 @@ function HoaDonVaBaoHanhPage() {
                             type="text"
                             className="form-control"
                             id="thoiGianBaoHanh"
-                            {...register("thoiGianBaoHanh")}
+                            defaultValue={sanPhamData?.thoiGianBaoHanh}
+                            readOnly
                           />
                         </div>
                         <div className="form-group">
@@ -136,7 +163,8 @@ function HoaDonVaBaoHanhPage() {
                             type="text"
                             className="form-control"
                             id="so-luong"
-                            {...register("soLuong")}
+                            defaultValue={sanPhamData?.soLuong}
+                            readOnly
                           />
                         </div>
                         <div className="form-group">
@@ -145,7 +173,8 @@ function HoaDonVaBaoHanhPage() {
                             type="text"
                             className="form-control"
                             id="giaTien"
-                            {...register("giaTien")}
+                            defaultValue={sanPhamData?.giaTien}
+                            readOnly
                           />
                         </div>
                         <div className="form-group">
@@ -154,7 +183,8 @@ function HoaDonVaBaoHanhPage() {
                             type="text"
                             className="form-control"
                             id="thanh-tien"
-                            {...register("thanhTien")}
+                            defaultValue={sanPhamData?.thanhTien}
+                            readOnly
                           />
                         </div>
                       </div>

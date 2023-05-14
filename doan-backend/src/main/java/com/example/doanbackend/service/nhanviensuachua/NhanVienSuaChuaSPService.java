@@ -49,6 +49,7 @@ public class NhanVienSuaChuaSPService {
         thongTinSuaChua.setViTriSua(capNhatThongTinChiTietSuaChuaSanPham.getViTriSua());
         thongTinSuaChua.setNguyenNhanLoi(capNhatThongTinChiTietSuaChuaSanPham.getNguyenNhanLoi());
         thongTinSuaChua.setChuThich(capNhatThongTinChiTietSuaChuaSanPham.getChuThich());
+        // thiếu thêm loại linh kiện
 
         entityThongTinSuaChuaService.save(thongTinSuaChua);
 

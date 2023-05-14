@@ -349,8 +349,27 @@ function Sidebar() {
               </h5>
               <ul className="m-0 p-0">
                 <li>
-                  <Link to={"/"} className="text-decoration-none">
+                  <Link
+                    to={"/nhan-vien/bao-hanh"}
+                    className="text-decoration-none"
+                  >
                     Danh sách bảo hành
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to={"/nhan-vien/bao-hanh/dang-ky"}
+                    className="text-decoration-none"
+                  >
+                    Đăng Ký Sản Phẩm Bảo Hành
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to={"/nhan-vien/bao-hanh/chuyen"}
+                    className="text-decoration-none"
+                  >
+                    Chuyển Sản Phẩm Bảo Hành
                   </Link>
                 </li>
                 <li>

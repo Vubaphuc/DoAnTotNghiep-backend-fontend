@@ -1,9 +1,6 @@
 package com.example.doanbackend.service.jpaservice;
 
-import com.example.doanbackend.dto.DanhSachKhachHangCoSanPhamNVLT;
-import com.example.doanbackend.dto.DanhSachSanPhamNVSCDto;
-import com.example.doanbackend.dto.DanhSachSanPhamOkDtoNVLT;
-import com.example.doanbackend.dto.SanPhamChuaSuaDto;
+import com.example.doanbackend.dto.*;
 import com.example.doanbackend.entity.KhachHang;
 import com.example.doanbackend.entity.SanPham;
 import com.example.doanbackend.exception.NotFoundException;
@@ -90,4 +87,20 @@ public class EntitySanPhamService implements ISanPhamService {
     }
 
 
+    @Override
+    public HoaDonSanPhamDto layChiTietSanPhamOKTheoID(Integer id) {
+        return sanPhamRepository.chiTietSanPhamDaSuaOK(id).orElseThrow(() -> {
+            throw new NotFoundException("Không tìm thấy sản phẩm OK nào có id là " + id);
+        });
+    }
+
+    @Override
+    public Page<DanhSachKhachHangCoSanPhamNVLT> timKiemSanPhamTheoTenKhachHangOK(String tenKhachHang,int page,int pageSize) {
+        return sanPhamRepository.timKiemSanPhamTheoTenKhachHangOK(PageRequest.of(page - 1, pageSize),tenKhachHang);
+    }
+
+    @Override
+    public Page<DanhSachKhachHangCoSanPhamNVLT> timKiemSanPhamTheoTenKhachHangPeding(String tenKhachHang, int page, int pageSize) {
+        return sanPhamRepository.timKiemSanPhamTheoTenKhachHangPending(PageRequest.of(page - 1,pageSize),tenKhachHang);
+    }
 }

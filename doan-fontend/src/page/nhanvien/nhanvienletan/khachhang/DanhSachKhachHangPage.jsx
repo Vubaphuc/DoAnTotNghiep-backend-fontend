@@ -1,68 +1,61 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import ReactPaginate from "react-paginate";
 import { Link } from "react-router-dom";
 import {
-  useLazyDanhSachOKQuery,
-  useLazyDanhSachPENDINGQuery,
+  useSearchKhachHangTheoTenOKQuery,
+  useSearchKhachHangTheoTenPedingQuery
 } from "../../../../app/apis/nhanvienletanApi/khachHangApi";
 
 function DanhSachKhachHangPage() {
   const [status, setStatus] = useState("OK");
+  const [tenKhachHang, setTenKhachHang] = useState("");
 
-  const [getSanPhamOk, { data: OKData, isLoading: OKLoangding }] =
-    useLazyDanhSachOKQuery();
-  const [getSanPHamPending, { data: pendingData, isLoading: pendingLoading }] =
-    useLazyDanhSachPENDINGQuery();
 
-  useEffect(() => {
-    getSanPhamOk({
-      page: 1,
-      pageSize: 10,
-    }),
-      getSanPHamPending({
-        page: 1,
-        pageSize: 10,
-      });
-  }, []);
+    const { data: khachHangData, isLoading: okLoading } = useSearchKhachHangTheoTenOKQuery({page: 1, pageSize: 10, tenKhachHang: tenKhachHang});
+    const { data: khachHangPeding, isLoading: pendingLoading } = useSearchKhachHangTheoTenPedingQuery({page: 1, pageSize: 10, tenKhachHang: tenKhachHang});
 
-  if (OKLoangding || pendingLoading) {
+
+  if (pendingLoading || okLoading) {
     return <h2>Loading...</h2>;
   }
 
-  console.log(OKData);
-  console.log(pendingData);
+  
 
   const handlePageClick = (page) => {
-    status === "OK" ? 
-    getSanPhamOk({
-      page: page.selected + 1,
-      pageSize: 10,
-    }) : 
-    getSanPHamPending({
-      page: page.selected + 1,
-      pageSize: 10,
-    })
+    status === "OK"
+      ? getSanPhamOk({
+          page: page.selected + 1,
+          pageSize: 10,
+        })
+      : getSanPHamPending({
+          page: page.selected + 1,
+          pageSize: 10,
+        });
   };
+
 
   const handleStatusChange = (event) => {
     setStatus(event.target.value);
+    setTenKhachHang("");
   };
 
-  console.log(status);
+  const handleChaneNameCustomer = (e) => {
+    setTenKhachHang(e.target.value);
+  }
+
 
   return (
     <>
       <section className="content">
         <div className="container-fluid">
-          <div className="row py-2">
-            <div className="col-12">
-              <Link to={"/"} className="btn btn-primary">
-                <i className="fas fa-plus"></i> Viết bài
-              </Link>
-              <Link to={"/"} className="btn btn-info">
-                <i className="fas fa-redo"></i> Refresh
-              </Link>
-            </div>
+          <div className="search-container">
+            <input
+              className="input-search mb-4"
+              type="text"
+              placeholder="Tìm kiếm theo tên khách hàng..."
+              value={tenKhachHang}
+              onChange={handleChaneNameCustomer}
+            />
           </div>
           <div className="row">
             <div className="col-12">
@@ -95,8 +88,8 @@ function DanhSachKhachHangPage() {
                     </thead>
                     <tbody>
                       {status === "OK" &&
-                        OKData &&
-                        OKData.data.map((dataOK) => (
+                        khachHangData &&
+                        khachHangData.data.map((dataOK) => (
                           <tr key={dataOK.id}>
                             <td>
                               <Link to={"/"} className="text-decoration-none">
@@ -115,8 +108,8 @@ function DanhSachKhachHangPage() {
                           </tr>
                         ))}
                       {status === "PENDING" &&
-                        pendingData &&
-                        pendingData.data.map((dataPending) => (
+                        khachHangPeding &&
+                        khachHangPeding.data.map((dataPending) => (
                           <tr key={dataPending.id}>
                             <td>
                               <Link to={"/"} className="text-decoration-none">
@@ -145,7 +138,11 @@ function DanhSachKhachHangPage() {
                       onPageChange={handlePageClick}
                       pageRangeDisplayed={3}
                       marginPagesDisplayed={2}
-                      pageCount={status === "OK" ? OKData?.totalPages : pendingData?.totalPages}
+                      pageCount={
+                        status === "OK"
+                          ? khachHangData?.totalPages
+                          : khachHangPeding?.totalPages
+                      }
                       previousLabel="< previous"
                       pageClassName="page-item"
                       pageLinkClassName="page-link"

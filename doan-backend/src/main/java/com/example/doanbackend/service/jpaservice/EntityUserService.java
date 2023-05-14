@@ -1,5 +1,6 @@
 package com.example.doanbackend.service.jpaservice;
 
+import com.example.doanbackend.dto.NhanVienDto;
 import com.example.doanbackend.dto.userdto.NhanVienSuaChuaDto;
 import com.example.doanbackend.dto.userdto.UserDto;
 import com.example.doanbackend.entity.User;
@@ -7,6 +8,8 @@ import com.example.doanbackend.exception.NotFoundException;
 import com.example.doanbackend.repository.UserRepository;
 import com.example.doanbackend.service.interfaceservice.jpa.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -59,5 +62,10 @@ public class EntityUserService implements IUserService {
         return userRepository.findByMaNhanVien(maNhanVien).orElseThrow(() -> {
             throw new NotFoundException("Không tìm thấy nhân viên nào có mã nhân viên là " + maNhanVien);
         });
+    }
+
+    @Override
+    public Page<NhanVienDto> danhSachNhanVienLeTanCoPhanTrang(int page, int pageSize) {
+        return userRepository.danhSachNhanVienLeTanCoPhanTrang(PageRequest.of(page - 1, pageSize));
     }
 }

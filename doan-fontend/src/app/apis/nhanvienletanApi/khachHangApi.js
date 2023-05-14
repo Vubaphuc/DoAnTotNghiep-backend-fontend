@@ -24,11 +24,19 @@ export const khachHangApi = createApi ({
         danhSachPENDING: builder.query ({
             query: ({page,pageSize}) => `san-pham-pending?page=${page}&pageSize=${pageSize}`
         }),
+        searchKhachHangTheoTenOK: builder.query ({
+            query: ({page,pageSize,tenKhachHang}) => `san-pham/search-OK?page=${page}&pageSize=${pageSize}&tenKhachHang=${tenKhachHang}`
+        }),
+        searchKhachHangTheoTenPeding: builder.query ({
+            query: ({page,pageSize,tenKhachHang}) => `san-pham/search-Pending?page=${page}&pageSize=${pageSize}&tenKhachHang=${tenKhachHang}`
+        })
     }),
 
 });
 
 export const {
     useLazyDanhSachOKQuery,
-    useLazyDanhSachPENDINGQuery
+    useLazyDanhSachPENDINGQuery,
+    useSearchKhachHangTheoTenOKQuery,
+    useSearchKhachHangTheoTenPedingQuery
 } = khachHangApi;

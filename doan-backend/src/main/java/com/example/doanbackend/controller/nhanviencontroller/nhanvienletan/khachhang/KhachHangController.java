@@ -23,6 +23,22 @@ public class KhachHangController {
         return ResponseEntity.ok(khachHangService.danhSachKhachHangCoSanPhamPeding(page,pageSize));
     }
 
+    @GetMapping("san-pham/search-OK")
+    public ResponseEntity<?> timKiemSanPhamTheoTenKhachHangOK(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int pageSize,
+            @RequestParam(defaultValue = "",value = "tenKhachHang") String tenKhachHang) {
+        return ResponseEntity.ok(khachHangService.timKiemSanPhamTheoTenKhachHangOK(tenKhachHang,page,pageSize));
+    }
+
+    @GetMapping("san-pham/search-Pending")
+    public ResponseEntity<?> timKiemSanPhamTheoTenKhachHangPending(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int pageSize,
+            @RequestParam(defaultValue = "",value = "tenKhachHang") String tenKhachHang) {
+        return ResponseEntity.ok(khachHangService.timKiemSanPhamTheoTenKhachHangPending(tenKhachHang,page,pageSize));
+    }
+
 
 
 }

@@ -1,6 +1,7 @@
 package com.example.doanbackend.service.jpaservice;
 
 import com.example.doanbackend.dto.DanhSachVenderDto;
+import com.example.doanbackend.dto.VendorDto;
 import com.example.doanbackend.entity.Vendor;
 import com.example.doanbackend.exception.NotFoundException;
 import com.example.doanbackend.repository.VendorRepository;
@@ -21,25 +22,27 @@ public class EntityVenderService implements IVenderService {
         vendorRepository.save(vendor);
     }
     @Override
-    public Page<Vendor> danhSachTatCaVender(int page, int pageSize) {
-        return vendorRepository.findAll(PageRequest.of(page - 1, pageSize));
+    public Page<VendorDto> danhSachTatCaVender(int page, int pageSize) {
+        return vendorRepository.danhSachTatCaVender(PageRequest.of(page - 1, pageSize));
     }
-    @Override
-    public Vendor layVenderRaTheoId(Integer id) {
-        return vendorRepository.findById(id).orElseThrow(() -> {
-           throw new NotFoundException("Không tìm thấy vender có id là " + id);
-        });
-    }
-    @Override
-    public Vendor layVenderRaTheoTen(String name) {
-        return vendorRepository.findByName(name).orElseThrow(() -> {
-            throw new NotFoundException("Không tìm thấy vender có name là " + name);
-        });
-    }
-
     @Override
     public Optional<Vendor> kiemTraTenVendor (String name) {
         return vendorRepository.findByName(name);
     }
 
+    @Override
+    public Vendor findById(Integer id) {
+        return vendorRepository.findById(id).orElseThrow(() -> {
+            throw new NotFoundException("Không tìm thấy vendor nào có id là " + id);
+        });
+    }
+
+    @Override
+    public VendorDto layVenderRaTheoId(Integer id) {
+        return vendorRepository.layVenderRaTheoId(id);
+    }
+    @Override
+    public VendorDto layVenderRaTheoTen(String name) {
+        return vendorRepository.layVenderRaTheoTen(name);
+    }
 }

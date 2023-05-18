@@ -20,12 +20,11 @@ const dangKyVatLieu = () => {
 
     const onDangKyVatLieu = (data) => {
 
-        console.log(data);
         taoMoiVatLieu(data)
         .unwrap()
         .then(() => {
             toast.success("Đăng ký thành công");
-            navigate("");
+            navigate("/nhan-vien/kho");
         })
         .catch((err) => {
             toast.error(err.data.message)

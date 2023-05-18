@@ -13,5 +13,6 @@ public class SanPhamChuaSuaDto {
     private String model;
     private String hangSanXuat;
     private String ime;
-    private String ten_loi;
+    private String tenLoi;
+    private boolean trangThai;
 }

@@ -17,12 +17,15 @@ export const sanPhamApi = createApi ({
             return heades;
         },
     }),
+    tagTypes: ['Product'],
     endpoints: (builder) => ({
         danhSachSanPhamChuaSua: builder.query ({
-            query: ({page,pageSize}) => `moi-dang-ky?page=${page}&pageSize=${pageSize}`                   
+            query: ({page,pageSize,term}) => `moi-dang-ky?page=${page}&pageSize=${pageSize}&term=${term}`  ,
+            providesTags: ['Product']                 
         }),
         danhSachSanPhamOKNVLT: builder.query ({
-            query: ({page,pageSize}) => `sua-xong?page=${page}&pageSize=${pageSize}`   
+            query: ({page,pageSize,term}) => `sua-xong?page=${page}&pageSize=${pageSize}&term=${term}` ,
+            providesTags: ['Product']  
         }),
         sanPhamTheoId: builder.query ({
             query: (id) => `chi-tiet/${id}`  
@@ -32,15 +35,40 @@ export const sanPhamApi = createApi ({
                 url: `cap-nhat/${id}`,
                 method: "PUT",
                 body: data
-            }),  
+            }), 
+            invalidatesTags: ['Product'] ,
+        }),
+        searchHistorySanPham: builder.query ({
+            query: ({page,pageSize,term}) => `tat-ca?page=${page}&pageSize=${pageSize}&term=${term}`,
+            providesTags: ['Product'] 
+        }),
+        dangKySanPhamMoi: builder.mutation ({
+            query: (data) => ({
+                url: "tao-moi",
+                method: "POST",
+                body: data,
+            }),
+            invalidatesTags: ['Product'],
+        }),
+        taoHoaDonSanPham: builder.mutation ({
+            query: (data) => ({
+                url: "san-pham",
+                method: "POST",
+                body: data,
+            }),
+            invalidatesTags: ['Product'],
         }),
     }),
 
 });
 
 export const {
-    useLazyDanhSachSanPhamChuaSuaQuery,
+    useDanhSachSanPhamChuaSuaQuery,
     useSanPhamTheoIdQuery,
     useCapNhatSanPhamTheoIdMutation,
-    useLazyDanhSachSanPhamOKNVLTQuery
+    useLazyDanhSachSanPhamOKNVLTQuery,
+    useDanhSachSanPhamOKNVLTQuery,
+    useSearchHistorySanPhamQuery,
+    useDangKySanPhamMoiMutation,
+    useTaoHoaDonSanPhamMutation
 } = sanPhamApi;

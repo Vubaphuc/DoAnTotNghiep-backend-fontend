@@ -63,7 +63,7 @@ function NhanVienSuaChuaPage() {
                             </td>
                             <td>{sanPham.ime}</td>
                             <td>{sanPham.tenLoi}</td>
-                            <td>{sanPham.trangThai}</td>
+                            <td>{sanPham.trangThai === true ? "OK" : "PENDING"}</td>
                           </tr>
                         ))}
                     </tbody>

@@ -1,9 +1,6 @@
 package com.example.doanbackend.service.interfaceservice.jpa;
 
-import com.example.doanbackend.dto.DanhSachVatLieuDto;
-import com.example.doanbackend.dto.DanhSachVatLieuTheoVendorDto;
-import com.example.doanbackend.dto.DanhSachVenderDto;
-import com.example.doanbackend.dto.VatLieuSuaChuaDto;
+import com.example.doanbackend.dto.*;
 import com.example.doanbackend.entity.VatLieu;
 import com.example.doanbackend.entity.Vendor;
 import org.springframework.data.domain.Page;
@@ -24,4 +21,5 @@ public interface IVatLieuService {
     VatLieu findByCode(String code);
 
     List<VatLieuSuaChuaDto> danhSachVatLieuTheoModelVaLinhKien(String tenModel, String tenLinhKien);
+    Page<HistoryMaterialDto> searchHistoryMaterial(int page, int pageSize, String term);
 }

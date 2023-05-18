@@ -18,9 +18,4 @@ public class HoaDonNVLTController {
         return ResponseEntity.ok(hoaDonNVLTService.layChiTietSanPhamOKTheoID(id));
     }
 
-    @PostMapping("san-pham")
-    public ResponseEntity<?> taoHoaDonMoi(@RequestBody TaoMoiHoaDon taoMoiHoaDon) {
-        return ResponseEntity.ok(hoaDonNVLTService.taoHoaDonMoi(taoMoiHoaDon));
-    }
-
 }

@@ -26,4 +26,8 @@ public class NhanVienSuaChuaSPController {
     public ResponseEntity<?> capNhatThongTinChiTietSuaChuaSanPham(@RequestBody CapNhatThongTinChiTietSuaChuaSanPham capNhatThongTinChiTietSuaChuaSanPham, @PathVariable Integer id) {
         return ResponseEntity.ok(nhanVienSuaChuaSPService.capNhatThongTinChiTietSuaChuaSanPham(capNhatThongTinChiTietSuaChuaSanPham, id));
     }
+    @GetMapping("danh-sach/linh-kien")
+    public ResponseEntity<?> danhSachLinhKienDienThoai(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int pageSize) {
+        return ResponseEntity.ok(nhanVienSuaChuaSPService.danhSachLinhKienDienThoai(page,pageSize));
+    }
 }

@@ -17,21 +17,23 @@ export const vatLieuNVSCApi = createApi ({
             return heades;
         },
     }),
+    tagTypes: ['Product'],
     endpoints: (builder) => ({
         danhSachVatLieuConHang: builder.query ({
-            query: ({page, pageSize}) => `danh-sach?page=${page}&pageSize=${pageSize}`
+            query: ({page, pageSize}) => `danh-sach?page=${page}&pageSize=${pageSize}`,
+            providesTags: ['Product']
         }),
         danhSachStatusOKOrder: builder.query ({
-            query: ({page, pageSize}) => `order/danh-sach-ok?page=${page}&pageSize=${pageSize}`
+            query: ({page, pageSize}) => `order/danh-sach-ok?page=${page}&pageSize=${pageSize}`,
+            providesTags: ['Product']
         }),
         danhSachStatusPENDINGOrder: builder.query ({
-            query: ({page, pageSize}) => `order/danh-sach-pending?page=${page}&pageSize=${pageSize}`
-        }),
-        danhSachVatLieuTheoModelVaLinhKien: builder.query ({
-            query: ({tenModel, tenLinhKien}) => `tao/danh-sach?tenModel=${tenModel}&tenLinhKien=${tenLinhKien}`
+            query: ({page, pageSize}) => `order/danh-sach-pending?page=${page}&pageSize=${pageSize}`,
+            providesTags: ['Product']
         }),
         chiTietVatLieuTheoCode: builder.query ({
-            query: (code) => `chi-tiet/${code}`
+            query: (code) => `chi-tiet/${code}`,
+            providesTags: ['Product']
         }),
         taoMoiOrderVatLieu: builder.mutation ({
             query: (data) => ({
@@ -39,7 +41,12 @@ export const vatLieuNVSCApi = createApi ({
                 method: "POST",
                 body: data,
             }),
+            invalidatesTags: ['Product'],
         }),
+        chiTietOrderTheoId: builder.query ({
+            query: (id) => `order/${id}`,
+            providesTags: ['Product']
+        })
     }),
 
 });
@@ -51,5 +58,5 @@ export const {
     useLazyDanhSachStatusPENDINGOrderQuery,
     useChiTietVatLieuTheoCodeQuery,
     useTaoMoiOrderVatLieuMutation,
-    useDanhSachVatLieuTheoModelVaLinhKienQuery
+    useChiTietOrderTheoIdQuery
 } = vatLieuNVSCApi;

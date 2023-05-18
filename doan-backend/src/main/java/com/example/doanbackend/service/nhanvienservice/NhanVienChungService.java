@@ -5,6 +5,7 @@ import com.example.doanbackend.dto.userdto.UserDto;
 import com.example.doanbackend.entity.Image;
 import com.example.doanbackend.entity.User;
 import com.example.doanbackend.exception.BadRequestException;
+import com.example.doanbackend.exception.NotFoundException;
 import com.example.doanbackend.mapper.UserMapper;
 import com.example.doanbackend.request.CapNhatThongTinCaNhan;
 import com.example.doanbackend.request.DoiMatKhau;
@@ -13,12 +14,25 @@ import com.example.doanbackend.response.FileResponse;
 import com.example.doanbackend.security.ICurrentUserLmpl;
 import com.example.doanbackend.service.jpaservice.EntityFileService;
 import com.example.doanbackend.service.jpaservice.EntityUserService;
+import org.apache.tomcat.util.file.ConfigurationSource;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
 
@@ -37,6 +51,7 @@ public class NhanVienChungService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private EntityFileService entityFileService;
+
 
 
 
@@ -177,14 +192,6 @@ public class NhanVienChungService {
 
     }
 
-    public UserDto thongTinNhanVienDangLogin() {
-
-        User user = iCurrentUserLmpl.getUser();
-
-        return UserMapper.toUserDto(user);
-    }
-
-
     // lấy ảnh đại diện user theo id
     public Image layAnhdaiDienTheoId(Integer id) {
 
@@ -192,7 +199,26 @@ public class NhanVienChungService {
             throw new BadRequestException("ID: " + id + " không phải ID của bạn");
         }
 
-        return entityFileService.findImageById(iCurrentUserLmpl.getUser().getAvatar().getId());
+        if (iCurrentUserLmpl.getUser().getAvatar() == null) {
+                try {
+                    Path path = Paths.get("src/main/resources/static/images/avatar-mac-dinh.png");
+                    byte[] defaultImageData = Files.readAllBytes(path);
+
+                    Image image = Image.builder()
+                            .type("avatar-mac-dinh/png")
+                            .data(defaultImageData)
+                            .build();
+                    return image;
+
+                } catch (IOException e) {
+                    throw new NotFoundException("Không thể truy cập avatar");
+                }
+            }
+
+        Image image = entityFileService.findImageById(iCurrentUserLmpl.getUser().getAvatar().getId());
+
+
+        return image;
 
     }
 }

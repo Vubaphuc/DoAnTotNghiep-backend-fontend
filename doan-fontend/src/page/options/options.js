@@ -76,3 +76,10 @@ export const getHangSanXuaOptions = () => {
       { label: "Motorola", value: "Motorola" },
   ];
 }
+
+export const getStatus = () => {
+  return [
+      { label: "OK", value: true },
+      { label: "PENDING", value: false },
+  ];
+}

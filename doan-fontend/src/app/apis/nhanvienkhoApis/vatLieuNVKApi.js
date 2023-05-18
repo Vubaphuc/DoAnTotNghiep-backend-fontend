@@ -15,14 +15,17 @@ export const vatLieuApi = createApi({
       return heades;
     },
   }),
+  tagTypes: ['Product'],
   endpoints: (builder) => ({
     danhSachTatCaLinhKien: builder.query({
       query: ({ page, pageSize }) =>
         `linh-kien/danh-sach?page=${page}&pageSize=${pageSize}`,
+        providesTags: ['Product']
     }),
     danhSachVatLieuAll: builder.query({
         query: ({ page, pageSize }) =>
           `danh-sach?page=${page}&pageSize=${pageSize}`,
+          providesTags: ['Product']
       }),
     taoMoiLinhKien: builder.mutation({
       query: (data) => ({
@@ -30,6 +33,7 @@ export const vatLieuApi = createApi({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ['Product'],
     }),
     taoMoiVatLieu: builder.mutation({
       query: (data) => ({
@@ -37,7 +41,12 @@ export const vatLieuApi = createApi({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ['Product'],
     }),
+    searchHistoryMaterial: builder.query ({
+      query: ({page,pageSize,term}) => `history?page=${page}&pageSize=${pageSize}&term=${term}`,
+      providesTags: ['Product'],
+    })
   }),
 });
 
@@ -46,5 +55,6 @@ export const {
   useDanhSachTatCaLinhKienQuery,
   useTaoMoiLinhKienMutation,
   useTaoMoiVatLieuMutation,
-  useLazyDanhSachVatLieuAllQuery
+  useLazyDanhSachVatLieuAllQuery,
+  useSearchHistoryMaterialQuery
 } = vatLieuApi;

@@ -22,11 +22,9 @@ import NhanVienBaoHanhPage from "./page/nhanvien/nhanvienbaohanh/NhanVienBaoHanh
 import DanhSachSanPhamChuaSuaChua from "./page/nhanvien/nhanvienletan/sanpham/DanhSachSanPhamChuaSua";
 import CapNhatThongTinSuaChuaSP from "./page/nhanvien/nhanviensuachua/CapNhatThongTinSuaChuaSP";
 import TimKiemSanPhamPage from "./page/nhanvien/nhanvienletan/timkiem/TimKiemSanPhamPage";
-import TimKiemKhachHangPage from "./page/nhanvien/nhanvienletan/timkiem/TimKiemKhachHangPage";
 import DanhSachKhachHangPage from "./page/nhanvien/nhanvienletan/khachhang/DanhSachKhachHangPage";
 import DangKyKhachHangPage from "./page/nhanvien/nhanvienletan/khachhang/DangKyKhachHangPage";
 import HoaDonVaBaoHanhPage from "./page/nhanvien/nhanvienletan/hoadonvabaohanh/HoaDonVaBaoHanhPage";
-import ThemSanPhamPage from "./page/nhanvien/nhanvienletan/sanpham/ThemSanPhamPage";
 import DangKyVatLieuPage from "./page/nhanvien/nhanvienkho/vatlieu/DangKyVatLieuPage";
 import DanhSachOderPage from "./page/nhanvien/nhanvienkho/oder/DanhSachOderPage";
 import TimKiemOderNNVKPage from "./page/nhanvien/nhanvienkho/timkiem/TimKiemOderNNVKPage";
@@ -40,7 +38,15 @@ import OderVatLieuNVSCPage from "./page/nhanvien/nhanviensuachua/OderVatLieuNVSC
 import DanhSachStatusOrderPage from "./page/nhanvien/nhanviensuachua/DanhSachStatusOrderPage";
 import ChiTietOrderPage from "./page/nhanvien/nhanviensuachua/ChiTietOrderPage";
 import DangKySanPhamBaoHanhPage from "./page/nhanvien/nhanvienbaohanh/DangKySanPhamBaoHanhPage";
-import ChuyenSanPhamSangBenLeTan from "./page/nhanvien/nhanvienbaohanh/ChuyenSanPhamSangBenLeTan";
+import ThongTinChiTietKhachHangPage from "./page/nhanvien/nhanvienletan/khachhang/ThongTinChiTietKhachHangPage";
+import TaoHoaDonPage from "./page/nhanvien/nhanvienletan/hoadonvabaohanh/TaoHoaDonPage";
+import ChiTietSanPhamTheoIdPage from "./page/nhanvien/nhanvienletan/sanpham/ChiTietSanPhamTheoIdPage";
+import ChiTietMotOrderPage from "./page/nhanvien/nhanvienkho/oder/ChiTietMotOrderPage";
+import DangKySanPhamMoiPage from "./page/nhanvien/nhanvienletan/sanpham/DangKySanPhamMoiPage";
+import TimKiemSanPhamNVBHPage from "./page/nhanvien/nhanvienbaohanh/TimKiemSanPhamNVBHPage";
+import TimKiemBaoHanh from "./page/nhanvien/nhanvienbaohanh/TimKiemBaoHanh";
+import DangKyNhanVienSuaChua from "./page/nhanvien/nhanvienbaohanh/DangKyNhanVienSuaChua";
+import ChuyenSanPhamSangBenSuaChua from "./page/nhanvien/nhanvienbaohanh/ChuyenSanPhamSangBenSuaChua";
 
 function App() {
   return (
@@ -59,9 +65,11 @@ function App() {
                 <Route path="tim-kiem" element={<TimKiemSanPhamPage />} />
                 <Route path="ds-kh" element={<DanhSachKhachHangPage />} />
                 <Route path="dk-kh" element={<DangKyKhachHangPage />} />
-                <Route path="tk-kh" element={<TimKiemKhachHangPage />} />
+                <Route path="dk-kh/:khachHangId" element={<DangKySanPhamMoiPage />} />
+                <Route path="hd-bh" element={<TaoHoaDonPage />} />
                 <Route path="hd-bh/:sanPhamId" element={<HoaDonVaBaoHanhPage />} />
-                <Route path="them-sp" element={<ThemSanPhamPage />} />
+                <Route path="ds-kh/:khachHangId" element={<ThongTinChiTietKhachHangPage />} />
+                <Route path="ds-sp/:sanPhamId" element={<ChiTietSanPhamTheoIdPage />} />
               </Route>
 
               {/* các đường dẫn còn lại */}
@@ -90,6 +98,7 @@ function App() {
                 <Route index element={<NhanVienKho />} />
                 <Route path="dang-ky" element={<DangKyVatLieuPage />} />
                 <Route path="oder" element={<DanhSachOderPage />} />
+                <Route path="oder/:orderId" element={<ChiTietMotOrderPage />} />
                 <Route path="search-oder" element={<TimKiemOderNNVKPage />} />
                 <Route path="search-vat-lieu" element={<TimKiemVatLieuNVKPage />} />
                 <Route path="vender" element={<DanhSachVenderPage />} />
@@ -105,8 +114,11 @@ function App() {
                 element={<AuthorizeRoutes requireRoles={["NHANVIENBAOHANH"]} />}
               >
                 <Route index element={<NhanVienBaoHanhPage />} />
-                <Route path="dang-ky" element={<DangKySanPhamBaoHanhPage />} />
-                <Route path="chuyen" element={<ChuyenSanPhamSangBenLeTan />} />
+                <Route path="search/san-pham" element={<TimKiemSanPhamNVBHPage />} />
+                <Route path="dang-ky/:productId" element={<DangKySanPhamBaoHanhPage />} />
+                <Route path="dang-ky/sua-chua/:productId" element={<ChuyenSanPhamSangBenSuaChua />} />
+                <Route path="search/bao-hanh" element={<TimKiemBaoHanh />} />
+                <Route path="dang-ky/sua-chua" element={<DangKyNhanVienSuaChua />} />
               </Route>
             </Route>
 

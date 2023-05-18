@@ -1,39 +1,53 @@
 import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import { Link } from "react-router-dom";
-import { useLazyDanhSachSanPhamChuaSuaQuery } from "../../../../app/apis/nhanvienletanApi/sanPhamApi";
+import { useDanhSachSanPhamChuaSuaQuery } from "../../../../app/apis/nhanvienletanApi/sanPhamApi";
 
 function DanhSachSanPhamChuaSuaChua() {
-  const [getSanPam, { data: sanPhamChuaSuaData, isLoading }] =
-    useLazyDanhSachSanPhamChuaSuaQuery();
+  const [term, setTerm] = useState("");
+  const [page, setPage] = useState(0);
 
-  useEffect(() => {
-    getSanPam({
-      page: 1,
+  const { data: sanPhamChuaSuaData, isLoading, isFetching } =
+    useDanhSachSanPhamChuaSuaQuery({
+      page: page + 1,
       pageSize: 10,
+      term: term,
     });
-  }, []);
+
+    useEffect(() => {
+
+    },[isFetching])
 
   if (isLoading) {
     return <h2>Loading...</h2>;
   }
 
   const handlePageClick = (page) => {
-    getSanPam({
-      page: page.selected + 1,
-      pageSize: 10,
-    });
+    setPage(page.selected);
+  };
+
+  const handleChaneNameCustomer = (e) => {
+    setTerm(e.target.value);
   };
 
   return (
     <>
       <section className="content">
         <div className="container-fluid">
-          <div class="search-container">
+          <div className="row py-2">
+            <div className="col-6">
+              <Link to={"/nhan-vien/le-tan"} className="btn btn-default">
+                <i className="fas fa-chevron-left"></i> Quay lại
+              </Link>
+            </div>
+          </div>
+          <div className="search-container">
             <input
               className="input-search mb-4"
               type="text"
-              placeholder="Tìm kiếm..."
+              placeholder="Tìm kiếm sản phẩm..."
+              value={term}
+              onChange={handleChaneNameCustomer}
             />
           </div>
           <div className="row">
@@ -70,7 +84,7 @@ function DanhSachSanPhamChuaSuaChua() {
                               </Link>
                             </td>
                             <td>{sanPham.ime}</td>
-                            <td>{sanPham.ten_loi}</td>
+                            <td>{sanPham.tenLoi}</td>
                           </tr>
                         ))}
                     </tbody>

@@ -23,7 +23,7 @@ const hookOrderVatLieuSuaChua = () => {
         .unwrap()
         .then(() => {
             toast.success("Tạo Order Thành công");
-            
+            navigate("/nhan-vien/sua-chua/order");
         })
         .catch((err) => {
             toast.error(err.data.message)

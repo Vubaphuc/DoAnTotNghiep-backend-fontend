@@ -24,19 +24,19 @@ public class ThongTinSuaChua {
     private String nguyenNhanLoi;
     @Column(name = "ngay_hoan_thanh")
     private LocalDateTime ngayHoanThanh;
-    @Column(name = "vi_tri_sua")
-    private String viTriSua;
     @Column(name = "chu_thich")
     private String chuThich;
-
 
     @ManyToOne
     @JoinColumn(name = "nhan_vien_sua_chua_id")
     private User nhanVienSuaChua;
-
     @ManyToOne
     @JoinColumn(name = "linh_kien_id")
     private LinhKien linhKien;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "san_pham_id")
+    private SanPham sanPham;
 
     @PostUpdate
     public void postUpdate() {

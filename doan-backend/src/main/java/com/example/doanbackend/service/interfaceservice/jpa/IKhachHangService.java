@@ -10,6 +10,7 @@ import java.util.Optional;
 public interface IKhachHangService {
     void save (KhachHang khachHang);
     KhachHang deleteById(Integer id);
+    KhachHang findById(Integer id);
     List<KhachHang> findAll();
 
     KhachHang updateById(Integer id);

@@ -14,25 +14,29 @@ function hookCapNhatThongTinNhanVienSuaChua (sanPhamId) {
 
     const [addNhanVienSuaChua] = useCapNhatSanPhamTheoIdMutation();
 
+
+
     const { control, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(dangKyNhanVienSuaChuaSchemas),
         mode: "all"
     });
 
     const onCapNhatNhanVien = (data) => {
+
         console.log(data)
 
         const newData = {...data, id: id};
         addNhanVienSuaChua(newData)
             .unwrap()
             .then(() => {
-                toast.success("Cập nhật thành công")
-                navigate("/nhan-vien/le-tan/dk-sc")
+                toast.success("Cập nhật thành công");
+
+                navigate("/nhan-vien/le-tan/dk-sc");
             })
             .catch((err) => {
                 toast.error(err.data.message)
             })
-            //23678523
+
     }
 
     return {

@@ -13,5 +13,5 @@ public class DanhSachSanPhamNVSCDto {
     private String hangSanXuat;
     private String IME;
     private String tenLoi;
-    private String trangThai;
+    private boolean trangThai;
 }

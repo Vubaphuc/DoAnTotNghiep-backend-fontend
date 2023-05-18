@@ -16,5 +16,5 @@ public interface IUserService {
     List<NhanVienSuaChuaDto> layDanhSachNhanVienSuaChua();
     User timKiemUserBangEmail(String email);
     User findByMaNhanVien(String maNhanVien);
-    Page<NhanVienDto> danhSachNhanVienLeTanCoPhanTrang(int page, int pageSize);
+    Page<NhanVienDto> danhSachNhanVienSuaChuaCoPhanTrang(int page, int pageSize);
 }

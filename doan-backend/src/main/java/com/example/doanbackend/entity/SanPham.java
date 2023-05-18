@@ -1,11 +1,7 @@
 package com.example.doanbackend.entity;
 
-import com.example.doanbackend.dto.DanhSachKhachHangCoSanPhamNVLT;
-import com.example.doanbackend.dto.SanPhamChuaSuaDto;
 import jakarta.persistence.*;
 import lombok.*;
-
-
 
 
 @Getter
@@ -29,33 +25,28 @@ public class SanPham {
     @Column(name = "ten_loi")
     private String tenLoi;
     @Column(name = "trang_thai")
-    private String trangThai;
+    private boolean trangThai;
     @Column(name = "so_luong")
     private Integer soLuong;
     @Column(name = "gia_tien")
     private double giaTien;
     @Column(name = "thanh_tien")
     private double thanhTien;
+    @Column(name = "loai_hinh_sua_chua")
+    private boolean isRepair;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hoa_don_id")
     private HoaDon hoaDon;
-
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "khach_hang_id")
     private KhachHang khachHang;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "thong_tin_sua_chua_id")
-    private ThongTinSuaChua thongTinSuaChua;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "thong_tin_le_tan_id")
-    private ThongTinLeTan thongTinLeTan;
 
     @PrePersist
     public void prePersist() {
-        this.trangThai = "PENDING";
+        this.isRepair = false;
+        this.trangThai = false;
+        this.soLuong = 1;
     }
 
 

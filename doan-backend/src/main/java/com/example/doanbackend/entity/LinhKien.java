@@ -23,8 +23,9 @@ public class LinhKien {
     @Column(name = "thoi_gian_bao_hanh")
     private Integer thoiGianBaoHanh;
 
-    @OneToMany(mappedBy = "linhKien", orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<VatLieu> vatLieus = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "nhan_vien_nhap_id")
+    private User nhanVienNhap;
 
 
 }

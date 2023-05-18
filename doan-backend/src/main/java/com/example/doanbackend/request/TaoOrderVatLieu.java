@@ -10,6 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TaoOrderVatLieu {
+
     private String code;
     private String loaiLinhKien;
     private Integer soLuong;

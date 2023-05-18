@@ -25,6 +25,12 @@ function Sidebar() {
         {isShowMenu(roles, ["NHANVIENSUACHUA"]) && (
           <h3 className="fs-4 text-white">Nhân viên sửa chữa</h3>
         )}
+        {isShowMenu(roles, ["NHANVIENKHO"]) && (
+          <h3 className="fs-4 text-white">Nhân viên Kho</h3>
+        )}
+        {isShowMenu(roles, ["NHANVIENBAOHANH"]) && (
+          <h3 className="fs-4 text-white">Nhân viên Bảo Hành</h3>
+        )}
       </div>
       <div className="menu">
         <div className="menu-item">
@@ -45,6 +51,14 @@ function Sidebar() {
                         className="text-decoration-none"
                       >
                         Danh sách sản phẩm
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        to={"/nhan-vien/le-tan/hd-bh"}
+                        className="text-decoration-none"
+                      >
+                        Tạo Hóa Đơn
                       </Link>
                     </li>
                     <li>
@@ -87,22 +101,6 @@ function Sidebar() {
                         className="text-decoration-none"
                       >
                         Đăng ký khách hàng
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        to={"/nhan-vien/le-tan/hd-bh"}
-                        className="text-decoration-none"
-                      >
-                        Hóa đơn và bảo hành
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        to={"/nhan-vien/le-tan/tk-kh"}
-                        className="text-decoration-none"
-                      >
-                        Tìm kiếm khách hàng
                       </Link>
                     </li>
                   </ul>
@@ -300,12 +298,7 @@ function Sidebar() {
                     to={"/nhan-vien/kho/vender/new-vender"}
                     className="text-decoration-none"
                   >
-                    Thêm Vender Mới
-                  </Link>
-                </li>
-                <li>
-                  <Link to={"/"} className="text-decoration-none">
-                    Tìm kiếm Vender
+                    Thêm Vendor Mới
                   </Link>
                 </li>
               </ul>
@@ -358,22 +351,25 @@ function Sidebar() {
                 </li>
                 <li>
                   <Link
-                    to={"/nhan-vien/bao-hanh/dang-ky"}
+                    to={"/nhan-vien/bao-hanh/dang-ky/sua-chua"}
                     className="text-decoration-none"
                   >
-                    Đăng Ký Sản Phẩm Bảo Hành
+                    Đăng Ký Nhân Viên Sửa Chữa
                   </Link>
                 </li>
                 <li>
                   <Link
-                    to={"/nhan-vien/bao-hanh/chuyen"}
+                    to={"/nhan-vien/bao-hanh/search/san-pham"}
                     className="text-decoration-none"
                   >
-                    Chuyển Sản Phẩm Bảo Hành
+                    Tìm Kiếm Sản Phẩm
                   </Link>
                 </li>
                 <li>
-                  <Link to={"/"} className="text-decoration-none">
+                  <Link
+                    to={"/nhan-vien/bao-hanh/search/bao-hanh"}
+                    className="text-decoration-none"
+                  >
                     Tìm kiếm bảo hành
                   </Link>
                 </li>

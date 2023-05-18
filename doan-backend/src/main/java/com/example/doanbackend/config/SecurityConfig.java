@@ -72,9 +72,8 @@ public class SecurityConfig {
         };
 
         String [] NHANVIENLETAN = {
-                "/dang-ky/**",
-                "/le-tan/san-pham/**",
-                "/le-tan/**"
+                "/le-tan/**",
+                "/le-tan/khach-hang/**"
         };
         String [] NHANVIENSUACHUA = {
                 "/nhan-vien-sua-chua/**"

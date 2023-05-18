@@ -1,6 +1,7 @@
 package com.example.doanbackend.dto.page;
 
 import com.example.doanbackend.dto.SanPhamChuaSuaDto;
+import com.example.doanbackend.dto.VendorDto;
 import com.example.doanbackend.entity.Vendor;
 import lombok.*;
 
@@ -16,5 +17,5 @@ public class PageVenderNVK {
     private int pageSize;
     private int totalPages;
     private int totalItems;
-    private List<Vendor> data;
+    private List<VendorDto> data;
 }

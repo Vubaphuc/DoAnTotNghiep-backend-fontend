@@ -2,6 +2,7 @@ package com.example.doanbackend.controller.nhanviencontroller;
 
 
 import com.example.doanbackend.entity.Image;
+import com.example.doanbackend.exception.NotFoundException;
 import com.example.doanbackend.request.CapNhatThongTinCaNhan;
 import com.example.doanbackend.request.DoiMatKhau;
 import com.example.doanbackend.request.QuenMatKhau;
@@ -11,6 +12,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.time.LocalDateTime;
 
 
 @RestController
@@ -46,7 +52,10 @@ public class NhanVienChungController {
     @GetMapping("avatar/{id}")
     public ResponseEntity<?> layAnhdaiDienTheoId(@PathVariable Integer id) {
         Image image = nhanVienChungService.layAnhdaiDienTheoId(id);
-        return ResponseEntity.ok().contentType(MediaType.parseMediaType(image.getType())).body(image.getData());
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(image.getType()))
+                .body(image.getData());
 
     }
 

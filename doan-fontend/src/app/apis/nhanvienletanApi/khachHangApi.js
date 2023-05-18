@@ -17,26 +17,40 @@ export const khachHangApi = createApi ({
             return heades;
         },
     }),
+    tagTypes: ['Product','khachHangApi'],
     endpoints: (builder) => ({
-        danhSachOK: builder.query ({
-            query: ({page,pageSize}) => `san-pham-ok?page=${page}&pageSize=${pageSize}`
-        }),
-        danhSachPENDING: builder.query ({
-            query: ({page,pageSize}) => `san-pham-pending?page=${page}&pageSize=${pageSize}`
-        }),
         searchKhachHangTheoTenOK: builder.query ({
-            query: ({page,pageSize,tenKhachHang}) => `san-pham/search-OK?page=${page}&pageSize=${pageSize}&tenKhachHang=${tenKhachHang}`
+            query: ({page,pageSize,term}) => `san-pham/search-OK?page=${page}&pageSize=${pageSize}&term=${term}`,
+            providesTags: ['Product'],
         }),
         searchKhachHangTheoTenPeding: builder.query ({
-            query: ({page,pageSize,tenKhachHang}) => `san-pham/search-Pending?page=${page}&pageSize=${pageSize}&tenKhachHang=${tenKhachHang}`
-        })
+            query: ({page,pageSize,term}) => `san-pham/search-Pending?page=${page}&pageSize=${pageSize}&term=${term}`,
+            providesTags: ['Product'],
+        }),
+        danhSachSanPhamTheoIdKhachHang: builder.query ({
+            query: (id) => `san-pham/${id}`,
+            providesTags: ['Product'],
+        }),
+        dangKyKhachHangMoi: builder.mutation ({
+            query: (data) => ({
+                url: "dang-ky",
+                method: "POST",
+                body: data,
+            }),
+            invalidatesTags: ['Product'],
+        }),
+        chiTietKhachHangTheoId: builder.query ({
+            query: (id) => `${id}`,
+            providesTags: ['Product'],
+        }),
     }),
 
 });
 
 export const {
-    useLazyDanhSachOKQuery,
-    useLazyDanhSachPENDINGQuery,
     useSearchKhachHangTheoTenOKQuery,
-    useSearchKhachHangTheoTenPedingQuery
+    useSearchKhachHangTheoTenPedingQuery,
+    useDanhSachSanPhamTheoIdKhachHangQuery,
+    useDangKyKhachHangMoiMutation,
+    useChiTietKhachHangTheoIdQuery,
 } = khachHangApi;

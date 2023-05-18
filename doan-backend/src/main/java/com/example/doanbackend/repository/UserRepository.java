@@ -18,11 +18,13 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     Optional<User> findUsersById(Integer id);
     Optional<User> findByMaNhanVien(String maNhanVien);
 
-    @Query("select new com.example.doanbackend.dto.userdto.NhanVienSuaChuaDto(u.id, u.maNhanVien, u.fullName) from User u where u.loaiNhanVien.name = ?1")
-    List<NhanVienSuaChuaDto> layDanhSachNhanVienSuaChua(String loaiNhanVien);
+    @Query("select new com.example.doanbackend.dto.userdto.NhanVienSuaChuaDto(u.id, u.maNhanVien, u.fullName) " +
+            "from User u join u.roles rl " +
+            "where rl.name = 'NHANVIENSUACHUA' ")
+    List<NhanVienSuaChuaDto> layDanhSachNhanVienSuaChua();
 
-    @Query("select new com.example.doanbackend.dto.NhanVienDto(u.maNhanVien, u.fullName) from User u left join u.roles rl where rl.name = 'NHANVIENLETAN'")
-    Page<NhanVienDto> danhSachNhanVienLeTanCoPhanTrang(Pageable pageable);
+    @Query("select new com.example.doanbackend.dto.NhanVienDto(u.id,u.maNhanVien, u.fullName) from User u left join u.roles rl where rl.name = 'NHANVIENSUACHUA'")
+    Page<NhanVienDto> danhSachNhanVienSuaChuaCoPhanTrang(Pageable pageable);
 
 
 }

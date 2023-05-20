@@ -30,9 +30,16 @@ public class VatLieuNVKController {
     }
 
 
-    @PreAuthorize("hasAnyRole('ROLE_NHANVIENKHO', 'ROLE_NHANVIENSUACHUA')")
     @GetMapping("danh-sach")
     public ResponseEntity<?> danhSachVatLieuAll(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int pageSize) {
         return ResponseEntity.ok(vatLieuNVKService.danhSachVatLieuAll(page,pageSize));
+    }
+
+    @GetMapping("history")
+    public ResponseEntity<?> searchHistoryMaterial(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int pageSize,
+            @RequestParam(defaultValue = "") String term) {
+        return ResponseEntity.ok(vatLieuNVKService.searchHistoryMaterial(page,pageSize,term));
     }
 }

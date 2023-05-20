@@ -16,9 +16,7 @@ public interface ISanPhamService {
 
     SanPham layRaSanPhamTheoId(Integer id);
 
-    SanPham xoaSanPhamTheoId(Integer id);
-
-    Page<SanPhamChuaSuaDto> layDanhSachSanPhamChuaSuaChua (int page, int pageSize);
+    Page<SanPhamChuaSuaDto> layDanhSachSanPhamChuaSuaChua (int page, int pageSize,String term);
 
     SanPhamChuaSuaDto layChiTietSanPhamTheoId(Integer id);
 
@@ -28,13 +26,14 @@ public interface ISanPhamService {
     DanhSachSanPhamNVSCDto layChiTietSanPhamTheoId_NVSC(Integer sanPhamId, Integer nhanVienId);
     Page<DanhSachSanPhamOkDtoNVLT> danhSachSanPhamDaSuaChuaOK_NVLT(Integer page, Integer pageSize, String trangThai);
 
-
-    Page<DanhSachKhachHangCoSanPhamNVLT> getDanhSachKhachHangCoSanPhamOK(Integer page, Integer pageSize);
-    Page<DanhSachKhachHangCoSanPhamNVLT> getDanhSachKhachHangCoSanPhamPending(Integer page, Integer pageSize);
-
     HoaDonSanPhamDto layChiTietSanPhamOKTheoID(Integer id);
 
     Page<DanhSachKhachHangCoSanPhamNVLT> timKiemSanPhamTheoTenKhachHangOK(String tenKhachHang,int page,int pageSize);
-    Page<DanhSachKhachHangCoSanPhamNVLT> timKiemSanPhamTheoTenKhachHangPeding(String tenKhachHang,int page,int pageSize);
+    Page<HistoryCustomerDto> timKiemSanPhamTheoTenKhachHangPeding(int page,int pageSize, String term);
+    Page<HistoryNhanVienLeTanDto> timKiemLichSuSanPhamTheoTerm(int page, int pageSize, String term);
+    Page<DanhSachSanPhamNVSCDto> danhSachSanPhamTheoIdKKhachHang(int page, int pageSize, Integer id);
+    Page<HistoryProductDto> searchHistoryProductByTerm(int page, int pageSize, String term);
+    ProductCustomerDto findProductAndCustomerById(Integer id);
+
 
 }

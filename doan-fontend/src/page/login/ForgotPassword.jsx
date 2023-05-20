@@ -3,6 +3,7 @@ import useForgotPassword from "../hook/hookAccount/useForgotPassword";
 import { Link } from "react-router-dom";
 
 function ForgotPassword() {
+  
   const { register, handleSubmit, errors, onSendEmail } = useForgotPassword();
 
   return (

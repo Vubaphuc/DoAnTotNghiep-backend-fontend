@@ -22,7 +22,6 @@ const store = configureStore({
         [quenMatKhauApi.reducerPath]: quenMatKhauApi.reducer,
         [thongtinCaNhanApi.reducerPath]: thongtinCaNhanApi.reducer,
         [sanPhamApi.reducerPath]: sanPhamApi.reducer,
-        auth: authReducer,
         [nhanVienLeTanApi.reducerPath]: nhanVienLeTanApi.reducer,
         [nhanVienSuaChuaSPApi.reducerPath]: nhanVienSuaChuaSPApi.reducer,
         [khachHangApi.reducerPath]: khachHangApi.reducer,
@@ -31,7 +30,8 @@ const store = configureStore({
         [venderNVKApi.reducerPath]: venderNVKApi.reducer,
         [vatLieuNVSCApi.reducerPath]: vatLieuNVSCApi.reducer,
         [hoaDonNVLTApi.reducerPath]: hoaDonNVLTApi.reducer,
-        [nhanVienBaoHanhApi.reducerPath]: nhanVienBaoHanhApi.reducer
+        [nhanVienBaoHanhApi.reducerPath]: nhanVienBaoHanhApi.reducer,
+        auth: authReducer
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat(

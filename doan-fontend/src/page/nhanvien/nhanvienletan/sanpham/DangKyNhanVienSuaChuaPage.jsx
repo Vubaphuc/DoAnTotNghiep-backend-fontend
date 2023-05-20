@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Link, useParams } from "react-router-dom";
 import Select from "react-select";
@@ -8,20 +8,26 @@ import hookCapNhatThongTinNhanVienSuaChua from "../../../hook/hookNhanvien/hookN
 import useFetchNhanVienQuery from "../../../hook/hookNhanvien/useFetchNhanVienQurey";
 
 function DangKyNhanVienSuaChuaPage() {
-
   const { sanPhamId } = useParams();
 
-  const { control, handleSubmit, errors, onCapNhatNhanVien } = hookCapNhatThongTinNhanVienSuaChua(sanPhamId);
+  const { control, handleSubmit, errors, onCapNhatNhanVien } =
+    hookCapNhatThongTinNhanVienSuaChua(sanPhamId);
 
   const { suaChuaData, suaChuaLoading } = useFetchNhanVienQuery();
-  const { data: sanPhamData, isLoading: sanPhamLoading } = useSanPhamTheoIdQuery(sanPhamId);
+  const { data: sanPhamData, isLoading: sanPhamLoading, isFetching } =
+    useSanPhamTheoIdQuery(sanPhamId);
+
+    useEffect(() => {
+
+    }, [isFetching])
 
   if (suaChuaLoading || sanPhamLoading) {
-    return <h2>Loading....</h2>
+    return <h2>Loading....</h2>;
   }
 
+  console.log(suaChuaData)
+
   const danhSachNhanVienSuaChuaOptions = getNhanViens(suaChuaData);
- 
 
   return (
     <>
@@ -30,7 +36,10 @@ function DangKyNhanVienSuaChuaPage() {
           <form onSubmit={handleSubmit(onCapNhatNhanVien)}>
             <div className="row py-2">
               <div className="col-6">
-                <Link to={"/nhan-vien/le-tan/dk-sc"} className="btn btn-default">
+                <Link
+                  to={"/nhan-vien/le-tan/dk-sc"}
+                  className="btn btn-default"
+                >
                   <i className="fas fa-chevron-left"></i> Quay lại
                 </Link>
                 <button type="submit" className="btn btn-info px-4">
@@ -81,7 +90,7 @@ function DangKyNhanVienSuaChuaPage() {
                             type="text"
                             className="form-control"
                             id="ten-loi"
-                            defaultValue={sanPhamData?.ten_loi}
+                            defaultValue={sanPhamData?.tenLoi}
                             disabled
                           />
                         </div>

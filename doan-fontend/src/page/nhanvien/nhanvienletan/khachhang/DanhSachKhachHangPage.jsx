@@ -3,46 +3,47 @@ import ReactPaginate from "react-paginate";
 import { Link } from "react-router-dom";
 import {
   useSearchKhachHangTheoTenOKQuery,
-  useSearchKhachHangTheoTenPedingQuery
+  useSearchKhachHangTheoTenPedingQuery,
 } from "../../../../app/apis/nhanvienletanApi/khachHangApi";
 
 function DanhSachKhachHangPage() {
   const [status, setStatus] = useState("OK");
-  const [tenKhachHang, setTenKhachHang] = useState("");
+  const [term, setTerm] = useState("");
+  const [pageOK, setPageOK] = useState(0);
+  const [pagePD, setPagePD] = useState(0);
 
+  const { data: khachHangData, isLoading: okLoading } =
+    useSearchKhachHangTheoTenOKQuery({
+      page: pageOK + 1,
+      pageSize: 10,
+      term: term,
+    });
 
-    const { data: khachHangData, isLoading: okLoading } = useSearchKhachHangTheoTenOKQuery({page: 1, pageSize: 10, tenKhachHang: tenKhachHang});
-    const { data: khachHangPeding, isLoading: pendingLoading } = useSearchKhachHangTheoTenPedingQuery({page: 1, pageSize: 10, tenKhachHang: tenKhachHang});
-
+  const { data: khachHangPeding, isLoading: pendingLoading } =
+    useSearchKhachHangTheoTenPedingQuery({
+      page: pagePD + 1,
+      pageSize: 10,
+      term: term,
+    });
 
   if (pendingLoading || okLoading) {
     return <h2>Loading...</h2>;
   }
 
-  
+  console.log(khachHangPeding);
 
   const handlePageClick = (page) => {
-    status === "OK"
-      ? getSanPhamOk({
-          page: page.selected + 1,
-          pageSize: 10,
-        })
-      : getSanPHamPending({
-          page: page.selected + 1,
-          pageSize: 10,
-        });
+    status === "OK" ? setPageOK(page.selected) : setPagePD(page.selected);
   };
-
 
   const handleStatusChange = (event) => {
     setStatus(event.target.value);
-    setTenKhachHang("");
+    setTerm("");
   };
 
   const handleChaneNameCustomer = (e) => {
-    setTenKhachHang(e.target.value);
-  }
-
+    setTerm(e.target.value);
+  };
 
   return (
     <>
@@ -52,8 +53,8 @@ function DanhSachKhachHangPage() {
             <input
               className="input-search mb-4"
               type="text"
-              placeholder="Tìm kiếm theo tên khách hàng..."
-              value={tenKhachHang}
+              placeholder="Tìm kiếm khách hàng..."
+              value={term}
               onChange={handleChaneNameCustomer}
             />
           </div>
@@ -72,63 +73,109 @@ function DanhSachKhachHangPage() {
                       onChange={handleStatusChange}
                     >
                       <option value="OK">OK</option>
-                      <option value="PENDING">PENDING</option>
+                      <option value="PENDING">Tất Cả</option>
                     </select>
                   </div>
-                  <table className="table table-bordered table-hover">
-                    <thead>
-                      <tr>
-                        <th>Mã Khách Hàng</th>
-                        <th>Họ và Tên</th>
-                        <th>Số Điện Thoại</th>
-                        <th>Email</th>
-                        <th>Số lượng sản phẩm</th>
-                        <th>Trạng Thái</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {status === "OK" &&
-                        khachHangData &&
-                        khachHangData.data.map((dataOK) => (
-                          <tr key={dataOK.id}>
-                            <td>
-                              <Link to={"/"} className="text-decoration-none">
-                                {dataOK?.maKhachHang}
-                              </Link>
-                            </td>
-                            <td>
-                              <Link to={"/"} className="text-decoration-none">
-                                {dataOK?.fullName}
-                              </Link>
-                            </td>
-                            <td>{dataOK?.phone}</td>
-                            <td>{dataOK?.email}</td>
-                            <td>{dataOK?.soLuongSP}</td>
-                            <td>{dataOK?.trangThai}</td>
-                          </tr>
-                        ))}
-                      {status === "PENDING" &&
-                        khachHangPeding &&
-                        khachHangPeding.data.map((dataPending) => (
-                          <tr key={dataPending.id}>
-                            <td>
-                              <Link to={"/"} className="text-decoration-none">
-                                {dataPending?.maKhachHang}
-                              </Link>
-                            </td>
-                            <td>
-                              <Link to={"/"} className="text-decoration-none">
-                                {dataPending?.fullName}
-                              </Link>
-                            </td>
-                            <td>{dataPending?.phone}</td>
-                            <td>{dataPending?.email}</td>
-                            <td>{dataPending?.soLuongSP}</td>
-                            <td>{dataPending?.trangThai}</td>
-                          </tr>
-                        ))}
-                    </tbody>
-                  </table>
+                  {status === "OK" && (
+                    <table className="table table-bordered table-hover">
+                      <thead>
+                        <tr>
+                          <th>Mã Khách Hàng</th>
+                          <th>Họ và Tên</th>
+                          <th>Số Điện Thoại</th>
+                          <th>Email</th>
+                          <th>Số lượng sản phẩm</th>
+                          <th>Trạng Thái</th>
+                          <th>Lựa Chọn</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {khachHangData &&
+                          khachHangData.data.map((dataOK) => (
+                            <tr key={dataOK.id}>
+                              <td>
+                                <Link
+                                  to={`/nhan-vien/le-tan/ds-kh/${dataOK.id}`}
+                                  className="text-decoration-none"
+                                >
+                                  {dataOK?.maKhachHang}
+                                </Link>
+                              </td>
+                              <td>
+                                <Link
+                                  to={`/nhan-vien/le-tan/ds-kh/${dataOK.id}`}
+                                  className="text-decoration-none"
+                                >
+                                  {dataOK?.fullName}
+                                </Link>
+                              </td>
+                              <td>{dataOK?.phone}</td>
+                              <td>{dataOK?.email}</td>
+                              <td>{dataOK?.soLuongSP}</td>
+                              <td>
+                                {dataOK?.trangThai === true ? "OK" : "PENDING"}
+                              </td>
+                              <td>
+                                <Link
+                                  to={`/nhan-vien/le-tan/dk-kh/${dataOK?.id}`}
+                                  className="btn btn-info px-2"
+                                >
+                                  Thêm Sản Phẩm
+                                </Link>
+                              </td>
+                            </tr>
+                          ))}
+                      </tbody>
+                    </table>
+                  )}
+                  {status === "PENDING" && (
+                    <table className="table table-bordered table-hover">
+                      <thead>
+                        <tr>
+                          <th>Mã Khách Hàng</th>
+                          <th>Họ và Tên</th>
+                          <th>Số Điện Thoại</th>
+                          <th>Email</th>
+                          <th>Số lượng sản phẩm</th>
+                          <th>Lựa Chọn</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {khachHangPeding &&
+                          khachHangPeding.data.map((dataPending) => (
+                            <tr key={dataPending.id}>
+                              <td>
+                                <Link
+                                  to={`/nhan-vien/le-tan/ds-kh/${dataPending.id}`}
+                                  className="text-decoration-none"
+                                >
+                                  {dataPending?.maKhachHang}
+                                </Link>
+                              </td>
+                              <td>
+                                <Link
+                                  to={`/nhan-vien/le-tan/ds-kh/${dataPending.id}`}
+                                  className="text-decoration-none"
+                                >
+                                  {dataPending?.fullName}
+                                </Link>
+                              </td>
+                              <td>{dataPending?.phone}</td>
+                              <td>{dataPending?.email}</td>
+                              <td>{dataPending?.soLuongSP}</td>
+                              <td>
+                                <Link
+                                  to={`/nhan-vien/le-tan/dk-kh/${dataPending?.id}`}
+                                  className="btn btn-info px-2"
+                                >
+                                  Thêm Sản Phẩm
+                                </Link>
+                              </td>
+                            </tr>
+                          ))}
+                      </tbody>
+                    </table>
+                  )}
                   <div
                     className="d-flex justify-content-center mt-3"
                     id="pagination"

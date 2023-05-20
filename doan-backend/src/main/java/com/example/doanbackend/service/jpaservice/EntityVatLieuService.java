@@ -1,9 +1,6 @@
 package com.example.doanbackend.service.jpaservice;
 
-import com.example.doanbackend.dto.DanhSachVatLieuDto;
-import com.example.doanbackend.dto.DanhSachVatLieuTheoVendorDto;
-import com.example.doanbackend.dto.DanhSachVenderDto;
-import com.example.doanbackend.dto.VatLieuSuaChuaDto;
+import com.example.doanbackend.dto.*;
 import com.example.doanbackend.entity.VatLieu;
 import com.example.doanbackend.exception.NotFoundException;
 import com.example.doanbackend.repository.VatLieuRepository;
@@ -62,5 +59,9 @@ public class EntityVatLieuService implements IVatLieuService {
     @Override
     public List<VatLieuSuaChuaDto> danhSachVatLieuTheoModelVaLinhKien(String tenModel, String tenLinhKien) {
         return vatLieuRepository.danhSachVatLieuTheoModelVaLinhKien(tenModel,tenLinhKien);
+    }
+    @Override
+    public Page<HistoryMaterialDto> searchHistoryMaterial(int page, int pageSize, String term) {
+        return vatLieuRepository.searchHistoryMaterial(PageRequest.of(page - 1, pageSize), term);
     }
 }

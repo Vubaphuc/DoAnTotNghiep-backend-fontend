@@ -1,171 +1,200 @@
 import React, { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
-import Select from "react-select";
-import hookDangKySanPhamBaoHanh from "../../hook/hookNhanvien/hookNhanVienBaoHanh/hookDangKySanPhamBaoHanh";
-import { getAddress, getHangSanXuaOptions, getNhanViens } from "../../options/options";
-import addressQuery from "../../address/address";
+import { Link, useParams } from "react-router-dom";
+import { useFindProductAndCustomerByIdQuery } from "../../../app/apis/nhanVienBaoHanh/nhanVienBaoHanhApi";
+import hookDangKySanPhamBaoHanhTinhPhi from "../../hook/hookNhanvien/hookNhanVienBaoHanh/hookDangKySanPhamBaoHanhTinhPhi";
+import hookDangKySanPhamBaoHanhKhongTinhPhi from "../../hook/hookNhanvien/hookNhanVienBaoHanh/hookDangKySanPhamBaoHanhKhongTinhPhi";
 
 function DangKySanPhamBaoHanhPage() {
-  const [status, setStatus] = useState("OK");
+  const { productId } = useParams();
+  const [status, setStatus] = useState("KHONGTINHPHI");
 
-  const { control, register, handleSubmit, errors, onDangKySanPhamBaoHanh } =
-    hookDangKySanPhamBaoHanh();
+  const {
+    register: registerC,
+    handleSubmit: handleSubmitC,
+    errors: errorsC,
+    onDangKyTinhPhi,
+  } = hookDangKySanPhamBaoHanhTinhPhi(productId);
 
-  const { provinces } = addressQuery();
+  const {
+    register: registerK,
+    handleSubmit: handleSubmitK,
+    errors: errorsK,
+    onDangKyKhongTinhPhi,
+  } = hookDangKySanPhamBaoHanhKhongTinhPhi(productId);
 
-  const addressOptions = getAddress(provinces);
+  const { data: productData, isLoading: productLoading } =
+    useFindProductAndCustomerByIdQuery(productId);
 
-  const hangSanPhamOptions = getHangSanXuaOptions();
+  if (productLoading) {
+    return <h2>Loading...</h2>;
+  }
+
+  const handleStatusChange = (e) => {
+    setStatus(e.target.value);
+  };
 
   return (
     <>
       <section className="content">
         <div className="container-fluid">
-          <form onSubmit={handleSubmit(onDangKySanPhamBaoHanh)}>
-            <div className="row py-2">
-              <div className="col-6">
-                <Link to={"/nhan-vien/bao-hanh"} className="btn btn-default">
-                  <i className="fas fa-chevron-left"></i> Quay lại
-                </Link>
-                <button type="submit" className="btn btn-info px-4">
-                  Đăng Ký
-                </button>
+          <div className="row py-2">
+            <div className="col-6">
+              <Link to={"/nhan-vien/bao-hanh"} className="btn btn-default">
+                <i className="fas fa-chevron-left"></i> Quay lại
+              </Link>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-12">
+              <div className="card">
+                <div className="card-body">
+                  <div className="table-sp-kh">
+                    <div className="col-md-5">
+                      <h4 className="mb-4">Thông Tin Khách Hàng</h4>
+                      <div className="form-group">
+                        <label>Họ Và Tên</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="full-name"
+                          defaultValue={productData?.fullNameKh}
+                          readOnly
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label>Số Điện Thoại</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="phone"
+                          defaultValue={productData?.phoneKh}
+                          readOnly
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label>Email</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="email"
+                          defaultValue={productData?.emailKh}
+                          readOnly
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label>Địa Chỉ</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="model"
+                          defaultValue={productData?.addressKh}
+                          readOnly
+                        />
+                      </div>
+                    </div>
+                    <div className="col-md-5">
+                      <h4 className="mb-4">Thông Tin Sản Phẩm</h4>
+                      <div className="form-group">
+                        <label>Hãng Điện Thoại</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="model"
+                          defaultValue={productData?.phoneKh}
+                          readOnly
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label>Model</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="model"
+                          defaultValue={productData?.model}
+                          readOnly
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label>Số IME</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="so-IME"
+                          defaultValue={productData?.ime}
+                          readOnly
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-            <div className="row">
-              <div className="col-12">
-                <div className="card">
-                  <div className="card-body">
-                    <div className="table-sp-kh">
-                      <div className="col-md-5">
-                        <h4 className="mb-4">Thông Tin Khách Hàng</h4>
-                        <div className="form-group">
-                          <label>Họ Và Tên</label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            id="full-name"
-                            {...register("fullNameKH")}
-                          />
-                          <p className="text-danger fst-italic mt-2">
-                            {errors.fullNameKH?.message}
-                          </p>
-                        </div>
-                        <div className="form-group">
-                          <label>Số Điện Thoại</label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            id="phone"
-                            {...register("phoneKH")}
-                          />
-                          <p className="text-danger fst-italic mt-2">
-                            {errors.phoneKH?.message}
-                          </p>
-                        </div>
-                        <div className="form-group">
-                          <label>Email</label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            id="email"
-                            {...register("emailKH")}
-                          />
-                          <p className="text-danger fst-italic mt-2">
-                            {errors.emailKH?.message}
-                          </p>
-                        </div>
-                        <div className="form-group">
-                          <label>Địa Chỉ</label>
-                          <Controller
-                            name="addressKH"
-                            control={control}
-                            render={({ field }) => (
-                              <div>
-                                <Select
-                                  {...field}
-                                  placeholder="--chọn địa chỉ--"
-                                  options={addressOptions}
-                                  value={addressOptions.find(
-                                    (c) => c.value === field.value
-                                  )}
-                                  onChange={(val) => field.onChange(val.value)}
-                                />
-                              </div>
-                            )}
-                          />
-                        </div>
-                      </div>
-                      <div className="col-md-5">
-                        <h4 className="mb-4">Thông Tin Sản Phẩm</h4>
-                        <div className="form-group">
-                          <label>Hãng Điện Thoại</label>
-                          <Controller
-                            name="hangSanPham"
-                            control={control}
-                            render={({ field }) => (
-                              <div>
-                                <Select
-                                  {...field}
-                                  placeholder="--Chọn Hãng Sản Xuất--"
-                                  options={hangSanPhamOptions}
-                                  value={hangSanPhamOptions.find(
-                                    (c) => c.value === field.value
-                                  )}
-                                  onChange={(val) => field.onChange(val.value)}
-                                />
-                              </div>
-                            )}
-                          />
-                        </div>
-                        <div className="form-group">
-                          <label>Model</label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            id="model"
-                            {...register("model")}
-                          />
-                          <p className="text-danger fst-italic mt-2">
-                            {errors.model?.message}
-                          </p>
-                        </div>
-                        <div className="form-group">
-                          <label>Số IME</label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            id="so-IME"
-                            {...register("soIME")}
-                          />
-                          <p className="text-danger fst-italic mt-2">
-                            {errors.soIME?.message}
-                          </p>
-                        </div>
-                        <div className="form-group">
-                          <label>Mổ Tả Lỗi</label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            id="ten-loi"
-                            {...register("tenLoi")}
-                          />
-                          <p className="text-danger fst-italic mt-2">
-                            {errors.tenLoi?.message}
-                          </p>
-                        </div>
-                        <div className="form-group">
-                          <label>Số Lượng</label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            id="so-luong"
-                            {...register("soLuong")}
-                          />
-                          <p className="text-danger fst-italic mt-2">
-                            {errors.soLuong?.message}
-                          </p>
+          </div>
+        </div>
+        <div className="input-bh">
+          <select
+            id="statusSelect"
+            className="form-control"
+            value={status}
+            onChange={handleStatusChange}
+          >
+            <option value="TINHPHI">Tính Phí </option>
+            <option value="KHONGTINHPHI">Không Tính Phí</option>
+          </select>
+        </div>
+        {status === "TINHPHI" ? (
+          <form onSubmit={handleSubmitC(onDangKyTinhPhi)}>
+            <div className="container-fluid">
+              <div className="row py-2">
+                <div className="col-6">
+                  <button type="submit" className="btn btn-info px-4">
+                    Đăng Ký
+                  </button>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-12">
+                  <div className="card">
+                    <div className="card-body">
+                      <div className="table-sp-kh">
+                        <div className="col-md-5">
+                          <h4 className="mb-4">Thông Tin Bảo Hành</h4>
+                          <div className="form-group">
+                            <label>Tên Lỗi</label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              id="full-name"
+                              {...registerC("tenLoi")}
+                            />
+                            <p className="text-danger fst-italic mt-2">
+                              {errorsC.tenLoi?.message}
+                            </p>
+                          </div>
+                          <div className="form-group">
+                            <label>Nguyên Nhân Lỗi</label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              id="phone"
+                              {...registerC("nguyenNhanLoi")}
+                            />
+                            <p className="text-danger fst-italic mt-2">
+                              {errorsC.nguyenNhanLoi?.message}
+                            </p>
+                          </div>
+                          <div className="form-group">
+                            <label>Giá Tiền</label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              id="email"
+                              {...registerC("giaTien")}
+                            />
+                            <p className="text-danger fst-italic mt-2">
+                              {errorsC.giaTien?.message}
+                            </p>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -174,7 +203,56 @@ function DangKySanPhamBaoHanhPage() {
               </div>
             </div>
           </form>
-        </div>
+        ) : (
+          <form onSubmit={handleSubmitK(onDangKyKhongTinhPhi)}>
+            <div className="container-fluid">
+              <div className="row py-2">
+                <div className="col-6">
+                  <button type="submit" className="btn btn-info px-4">
+                    Đăng Ký
+                  </button>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-12">
+                  <div className="card">
+                    <div className="card-body">
+                      <div className="table-sp-kh">
+                        <div className="col-md-5">
+                          <h4 className="mb-4">Thông Tin Bảo Hành</h4>
+                          <div className="form-group">
+                            <label>Tên Lỗi</label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              id="full-name"
+                              {...registerK("tenLoi")}
+                            />
+                            <p className="text-danger fst-italic mt-2">
+                              {errorsK.tenLoi?.message}
+                            </p>
+                          </div>
+                          <div className="form-group">
+                            <label>Nguyên Nhân Lỗi</label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              id="phone"
+                              {...registerK("nguyenNhanLoi")}
+                            />
+                            <p className="text-danger fst-italic mt-2">
+                              {errorsK.nguyenNhanLoi?.message}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        )}
       </section>
     </>
   );

@@ -8,6 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class DanhSachVatLieuTheoVendorDto {
+    private Integer id;
     private String code;
     private String tenModel;
     private int soLuong;

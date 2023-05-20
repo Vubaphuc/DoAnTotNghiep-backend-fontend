@@ -2,27 +2,32 @@ import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Link, useParams } from "react-router-dom";
 import Select from "react-select";
-import { getTypeOptions } from "../../options/options";
+import { getLinhKien, getStatus } from "../../options/options";
 import hookCapNhatThongTinNhanVienSuaChua from "../../hook/hookNhanvien/hookNhanVienSuaChua/hookCapNhatThongTinSuaChua";
-import { useChiTietSanPhamTheoIdQuery } from "../../../app/apis/nhanviensuachuaApis/nhanVienSuaChuaSPApi";
+import {
+  useChiTietSanPhamTheoIdQuery,
+  useDanhSachLinhKienQuery,
+} from "../../../app/apis/nhanviensuachuaApis/nhanVienSuaChuaSPApi";
 
 function CapNhatThongTinSuaChuaSP() {
+  const { sanPhamId } = useParams();
 
-    const { sanPhamId } = useParams();
+  const { control, register, handleSubmit, errors, onCapNhatThongTinSuaChua } =
+    hookCapNhatThongTinNhanVienSuaChua(sanPhamId);
 
-    const { control, register, handleSubmit, errors, onCapNhatThongTinSuaChua } = hookCapNhatThongTinNhanVienSuaChua(sanPhamId);
+  const { data: sanPhamData, isLoading: dataLoading } =
+    useChiTietSanPhamTheoIdQuery(sanPhamId);
 
-    const { data: sanPhamData, isLoading: dataLoading } = useChiTietSanPhamTheoIdQuery(sanPhamId);
+  const { data: linhKienData, isLoading: linhKienLoading } =
+    useDanhSachLinhKienQuery({ page: 1, pageSize: 10 });
 
-    if (dataLoading) {
-        return <h2>Loading....</h2>
-    }
+  if (dataLoading || linhKienLoading) {
+    return <h2>Loading....</h2>;
+  }
 
-    console.log(sanPhamData)
+  const linhKienOptions = getLinhKien(linhKienData?.data);
 
-  
-
-  const defaultStatus = getTypeOptions();
+  const defaultStatus = getStatus();
 
   return (
     <>
@@ -31,10 +36,7 @@ function CapNhatThongTinSuaChuaSP() {
           <form onSubmit={handleSubmit(onCapNhatThongTinSuaChua)}>
             <div className="row py-2">
               <div className="col-6">
-                <Link
-                  to={"/nhan-vien/sua-chua"}
-                  className="btn btn-default"
-                >
+                <Link to={"/nhan-vien/sua-chua"} className="btn btn-default">
                   <i className="fas fa-chevron-left"></i> Quay lại
                 </Link>
                 <button type="submit" className="btn btn-info px-4">
@@ -101,20 +103,29 @@ function CapNhatThongTinSuaChuaSP() {
                             {...register("nguyenNhanLoi")}
                           />
                           <p className="text-danger fst-italic mt-2">
-                          {errors.nguyenNhanLoi?.message}
-                        </p>
+                            {errors.nguyenNhanLoi?.message}
+                          </p>
                         </div>
                         <div className="form-group">
-                          <label>Vị trí Sửa</label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            id="vi-tri-sua"
-                            {...register("viTriSua")}
+                          <label className="mb-3">Vị Trí Sửa</label>
+                          <Controller
+                            name="viTriSua"
+                            control={control}
+                            defaultValue={linhKienOptions.value}
+                            render={({ field }) => (
+                              <div>
+                                <Select
+                                  {...field}
+                                  placeholder="--Chọn Vị Trí Sửa--"
+                                  options={linhKienOptions}
+                                  value={defaultStatus.find(
+                                    (c) => c.value === field.value
+                                  )}
+                                  onChange={(val) => field.onChange(val.value)}
+                                />
+                              </div>
+                            )}
                           />
-                          <p className="text-danger fst-italic mt-2">
-                          {errors.viTriSua?.message}
-                        </p>
                         </div>
                         <div className="form-group">
                           <label>Chú Thích</label>

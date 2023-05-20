@@ -17,12 +17,15 @@ export const nhanVienSuaChuaSPApi = createApi ({
             return heades;
         },
     }),
+    tagTypes: ['Product'],
     endpoints: (builder) => ({
         danhSachSanPhamSuaChuaTheoIdNguoiSua: builder.query ({
-            query: ({page, pageSize}) => `ds-sp?page=${page}&pageSize=${pageSize}`
+            query: ({page, pageSize}) => `ds-sp?page=${page}&pageSize=${pageSize}`,
+            providesTags: ['Product'],
         }),
         chiTietSanPhamTheoId: builder.query ({
-            query: (id) => `san-pham/${id}`
+            query: (id) => `san-pham/${id}`,
+            providesTags: ['Product'],
         }),
         capNhatChiTietSuaChuaSanPham: builder.mutation ({
             query: ({id,...data}) => ({
@@ -30,6 +33,11 @@ export const nhanVienSuaChuaSPApi = createApi ({
                 method: "PUT",
                 body: data,
             }),
+            invalidatesTags: ['Product'],
+        }),
+        danhSachLinhKien: builder.query ({
+            query: ({page,pageSize}) => `danh-sach/linh-kien?page=${page}&pageSize=${pageSize}` ,
+            providesTags: ['Product'],
         }),
     }),
 
@@ -38,5 +46,6 @@ export const nhanVienSuaChuaSPApi = createApi ({
 export const {
     useLazyDanhSachSanPhamSuaChuaTheoIdNguoiSuaQuery,
     useChiTietSanPhamTheoIdQuery,
-    useCapNhatChiTietSuaChuaSanPhamMutation
+    useCapNhatChiTietSuaChuaSanPhamMutation,
+    useDanhSachLinhKienQuery
 } = nhanVienSuaChuaSPApi;

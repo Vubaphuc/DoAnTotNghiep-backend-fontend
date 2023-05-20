@@ -11,7 +11,6 @@ const danhSachVenderVaLinhKien = () => {
     pageSize: 10,
   });
 
-
   return {
     linhKienData, linhKienLoading, venderData, venderLoading
   }

@@ -39,15 +39,8 @@ public class EntitySanPhamService implements ISanPhamService {
     }
 
     @Override
-    public SanPham xoaSanPhamTheoId(Integer id) {
-        SanPham sanPham = sanPhamRepository.findById(id).orElseThrow(() -> {
-            throw new NotFoundException("Không tìm thấy sản phẩm có id là " + id);
-        });
-        return null;
-    }
-    @Override
-    public Page<SanPhamChuaSuaDto> layDanhSachSanPhamChuaSuaChua(int page, int pageSize) {
-        return sanPhamRepository.layDanhSachSanPhamChuaSuaChua(PageRequest.of(page - 1, pageSize));
+    public Page<SanPhamChuaSuaDto> layDanhSachSanPhamChuaSuaChua(int page, int pageSize, String term) {
+        return sanPhamRepository.layDanhSachSanPhamChuaSuaChua(PageRequest.of(page - 1, pageSize), term);
     }
 
 
@@ -60,8 +53,7 @@ public class EntitySanPhamService implements ISanPhamService {
 
     @Override
     public Page<DanhSachSanPhamNVSCDto> layDanhSachSanPhamPhanPhatChoUser(int page, int pageSize, Integer id) {
-        String trangThai = "PENDING";
-        return sanPhamRepository.danhSachSanPhamDaPhatChoNguoiSuaChuaTheoIdNhanVien(PageRequest.of(page - 1, pageSize),id,trangThai);
+        return sanPhamRepository.danhSachSanPhamDaPhatChoNguoiSuaChuaTheoIdNhanVien(PageRequest.of(page - 1, pageSize),id);
     }
 
     @Override
@@ -72,20 +64,9 @@ public class EntitySanPhamService implements ISanPhamService {
     }
 
     @Override
-    public Page<DanhSachSanPhamOkDtoNVLT> danhSachSanPhamDaSuaChuaOK_NVLT(Integer page, Integer pageSize, String trangThai) {
-        return sanPhamRepository.danhSachSanPhamDaSuaChuaOK_NVLT(PageRequest.of(page - 1, pageSize), trangThai);
+    public Page<DanhSachSanPhamOkDtoNVLT> danhSachSanPhamDaSuaChuaOK_NVLT(Integer page, Integer pageSize, String term) {
+        return sanPhamRepository.danhSachSanPhamDaSuaChuaOK_NVLT(PageRequest.of(page - 1, pageSize), term);
     }
-
-    @Override
-    public Page<DanhSachKhachHangCoSanPhamNVLT> getDanhSachKhachHangCoSanPhamOK(Integer page, Integer pageSize) {
-        return sanPhamRepository.getDanhSachKhachHangCoSanPhamOK(PageRequest.of(page - 1, pageSize));
-    }
-
-    @Override
-    public Page<DanhSachKhachHangCoSanPhamNVLT> getDanhSachKhachHangCoSanPhamPending(Integer page, Integer pageSize) {
-        return sanPhamRepository.getDanhSachKhachHangCoSanPhamPending(PageRequest.of(page - 1, pageSize));
-    }
-
 
     @Override
     public HoaDonSanPhamDto layChiTietSanPhamOKTheoID(Integer id) {
@@ -93,14 +74,32 @@ public class EntitySanPhamService implements ISanPhamService {
             throw new NotFoundException("Không tìm thấy sản phẩm OK nào có id là " + id);
         });
     }
-
     @Override
-    public Page<DanhSachKhachHangCoSanPhamNVLT> timKiemSanPhamTheoTenKhachHangOK(String tenKhachHang,int page,int pageSize) {
-        return sanPhamRepository.timKiemSanPhamTheoTenKhachHangOK(PageRequest.of(page - 1, pageSize),tenKhachHang);
+    public Page<DanhSachKhachHangCoSanPhamNVLT> timKiemSanPhamTheoTenKhachHangOK(String term,int page,int pageSize) {
+        return sanPhamRepository.timKiemSanPhamTheoTenKhachHangOK(PageRequest.of(page - 1, pageSize),term);
     }
 
     @Override
-    public Page<DanhSachKhachHangCoSanPhamNVLT> timKiemSanPhamTheoTenKhachHangPeding(String tenKhachHang, int page, int pageSize) {
-        return sanPhamRepository.timKiemSanPhamTheoTenKhachHangPending(PageRequest.of(page - 1,pageSize),tenKhachHang);
+    public Page<HistoryCustomerDto> timKiemSanPhamTheoTenKhachHangPeding( int page, int pageSize, String term) {
+        return sanPhamRepository.timKiemSanPhamTheoTenKhachHangPending(PageRequest.of(page - 1,pageSize),term);
+    }
+
+    @Override
+    public Page<HistoryNhanVienLeTanDto> timKiemLichSuSanPhamTheoTerm(int page, int pageSize, String term) {
+        return sanPhamRepository.timKiemLichSuSanPhamTheoTerm(PageRequest.of(page - 1, pageSize), term);
+    }
+    @Override
+    public Page<DanhSachSanPhamNVSCDto> danhSachSanPhamTheoIdKKhachHang(int page, int pageSize, Integer id) {
+        return sanPhamRepository.danhSachSanPhamTheoIdKKhachHang(PageRequest.of(page - 1, pageSize), id);
+    }
+    @Override
+    public Page<HistoryProductDto> searchHistoryProductByTerm(int page, int pageSize, String term) {
+        return sanPhamRepository.searchHistoryProductByTerm(PageRequest.of(page - 1, pageSize), term);
+    }
+    @Override
+    public ProductCustomerDto findProductAndCustomerById(Integer id) {
+        return sanPhamRepository.findProductAndCustomerById(id).orElseThrow(() -> {
+            throw new NotFoundException("Not Found with id: " + id);
+        });
     }
 }

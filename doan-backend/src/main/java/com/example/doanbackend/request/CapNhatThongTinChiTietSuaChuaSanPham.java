@@ -12,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class CapNhatThongTinChiTietSuaChuaSanPham {
     private String nguyenNhanLoi;
-    private String viTriSua;
+    private Integer viTriSua;
     private String chuThich;
-    private String trangThai;
+    private boolean trangThai;
 }

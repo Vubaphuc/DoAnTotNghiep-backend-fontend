@@ -15,14 +15,16 @@ export const nhanVienLeTanApi = createApi ({
             return heades;
         },
     }),
+    tagTypes: ['Product'],
     endpoints: (builder) => ({
         danhSachNhanVienSuaChua: builder.query ({
-            query: () => "sua-chua",                  
+            query: () => "sua-chua", 
+            providesTags: ['Product'],                 
         }),
     }),
 
 });
 
 export const {
-    useDanhSachNhanVienSuaChuaQuery
+    useDanhSachNhanVienSuaChuaQuery,
 } = nhanVienLeTanApi;

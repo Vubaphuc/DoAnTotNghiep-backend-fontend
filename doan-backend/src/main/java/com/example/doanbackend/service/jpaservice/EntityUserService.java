@@ -54,7 +54,7 @@ public class EntityUserService implements IUserService {
 
     @Override
     public List<NhanVienSuaChuaDto> layDanhSachNhanVienSuaChua() {
-        return userRepository.layDanhSachNhanVienSuaChua("Nhân Viên Sửa Chữa");
+        return userRepository.layDanhSachNhanVienSuaChua();
     }
 
     @Override
@@ -65,7 +65,7 @@ public class EntityUserService implements IUserService {
     }
 
     @Override
-    public Page<NhanVienDto> danhSachNhanVienLeTanCoPhanTrang(int page, int pageSize) {
-        return userRepository.danhSachNhanVienLeTanCoPhanTrang(PageRequest.of(page - 1, pageSize));
+    public Page<NhanVienDto> danhSachNhanVienSuaChuaCoPhanTrang(int page, int pageSize) {
+        return userRepository.danhSachNhanVienSuaChuaCoPhanTrang(PageRequest.of(page - 1, pageSize));
     }
 }

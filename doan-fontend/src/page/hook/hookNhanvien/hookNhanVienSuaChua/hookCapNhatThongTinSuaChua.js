@@ -23,8 +23,6 @@ function hookCapNhatThongTinNhanVienSuaChua (sanPhamId) {
     const onCapNhatThongTinSuaChua = (data) => {
         const newData = {...data,id: id};
 
-        console.log(newData)
-
         capNhatChiTietSuaChuaSanPham(newData)
             .unwrap()
             .then(() => {

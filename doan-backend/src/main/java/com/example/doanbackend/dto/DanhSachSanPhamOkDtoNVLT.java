@@ -14,7 +14,7 @@ public class DanhSachSanPhamOkDtoNVLT {
     private String IME;
     private String tenLoi;
     private String viTriSua;
-    private String trangThai;
+    private boolean trangThai;
     private Integer soLuong;
     private double giaTien;
     private double thanhTien;

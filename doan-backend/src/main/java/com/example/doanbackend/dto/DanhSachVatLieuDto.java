@@ -9,7 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class DanhSachVatLieuDto {
-
+    private Integer id;
     private String code;
     private String tenModel;
     private int soLuong;

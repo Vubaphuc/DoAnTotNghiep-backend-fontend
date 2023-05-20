@@ -17,10 +17,12 @@ export const hoaDonNVLTApi = createApi ({
             return heades;
         },
     }),
+    tagTypes: ['Product'],
     endpoints: (builder) => ({
         chiTietSanPhamOK: builder.query ({
-            query: (id) => `san-pham/${id}`
-        })
+            query: (id) => `san-pham/${id}`,
+            providesTags: ['Product'],
+        }),
     }),
 
 });

@@ -1,20 +1,15 @@
 import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import { Link } from "react-router-dom";
-import { useLazyDanhSachSanPhamOKNVLTQuery } from "../../../app/apis/nhanvienletanApi/sanPhamApi";
+import { useDanhSachSanPhamOKNVLTQuery } from "../../../app/apis/nhanvienletanApi/sanPhamApi";
 
 function NhanVienLeTanPage() {
   const [status, setStatus] = useState("KHACHHANG");
+  const [term, setTerm] = useState("");
+  const [page, setPage] = useState(0);
 
-  const [getSanPham, { data: sanPhamData, isLoading: sanPhamLoading }] =
-    useLazyDanhSachSanPhamOKNVLTQuery();
-
-  useEffect(() => {
-    getSanPham({
-      page: 1,
-      pageSize: 10,
-    });
-  }, []);
+  const { data: sanPhamData, isLoading: sanPhamLoading } =
+    useDanhSachSanPhamOKNVLTQuery({ page: page + 1, pageSize: 10, term: term });
 
   if (sanPhamLoading) {
     return <h2>Loading....</h2>;
@@ -23,25 +18,29 @@ function NhanVienLeTanPage() {
   console.log(sanPhamData);
 
   const handlePageClick = (page) => {
-    getSanPham({
-      page: page.selected + 1,
-      pageSize: 10,
-    });
+    setPage(page.selected);
   };
 
   const handleStatusChange = (e) => {
-    setStatus(e.target.value)
-  }
+    setStatus(e.target.value);
+    setTerm("");
+  };
+
+  const handleChaneNameCustomer = (e) => {
+    setTerm(e.target.value);
+  };
 
   return (
     <>
       <section className="content">
         <div className="container-fluid">
-          <div class="search-container">
+          <div className="search-container">
             <input
               className="input-search mb-4"
               type="text"
-              placeholder="Tìm kiếm..."
+              placeholder="Tìm kiếm kiếm sản phẩm..."
+              value={term}
+              onChange={handleChaneNameCustomer}
             />
           </div>
           <div className="row">
@@ -103,7 +102,9 @@ function NhanVienLeTanPage() {
                             <td>{sanPham?.soLuong}</td>
                             <td>{sanPham?.giaTien}</td>
                             <td>{sanPham?.thanhTien}</td>
-                            <td>{sanPham?.trangThai}</td>
+                            <td>
+                              {sanPham?.trangThai === true ? "OK" : "PENDING"}
+                            </td>
                           </tr>
                         ))}
                     </tbody>

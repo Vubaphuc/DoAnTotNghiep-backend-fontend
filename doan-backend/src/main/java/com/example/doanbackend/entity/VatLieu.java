@@ -33,16 +33,19 @@ public class VatLieu {
     @Column(name = "ngay_cap_nhat")
     private LocalDateTime ngayCapNhat;
 
-    @ManyToMany
-    @JoinTable(name = "vat_lieu_vendors",
-            joinColumns = @JoinColumn(name = "vat_lieu_id"),
-            inverseJoinColumns = @JoinColumn(name = "vendors_id"))
-    private List<Vendor> vendors = new ArrayList<>();
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "linh_kien_id")
     private LinhKien linhKien;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "nhan_vien_nhap_id")
+    private User nhanVienNhap;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "vendor_id")
+    private Vendor vendor;
 
     @PrePersist()
     public void prePersist() {

@@ -29,6 +29,12 @@ public class EntityKhachHangService implements IKhachHangService {
         // chưa có logic
         return null;
     }
+    @Override
+    public KhachHang findById(Integer id) {
+        return khachHangRepository.findById(id).orElseThrow(() -> {
+            throw new NotFoundException("Không Tìm Thấy Khách Hàng có id là " + id);
+        });
+    }
 
     @Override
     public List<KhachHang> findAll() {

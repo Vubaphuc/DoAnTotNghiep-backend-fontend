@@ -17,5 +17,8 @@ public class Vendor {
     private Integer id;
     @Column(name = "name")
     private String name;
+    @ManyToOne
+    @JoinColumn(name = "nhan_vien_nhap_id")
+    private User nhanVienNhap;
 
 }

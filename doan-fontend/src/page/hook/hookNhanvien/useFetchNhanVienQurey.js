@@ -1,15 +1,15 @@
-import { useDanhSachNhanVienLeTanQuery } from "../../../app/apis/nhanVienBaoHanh/nhanVienBaoHanhApi";
 import { useDanhSachNhanVienSuaChuaQuery } from "../../../app/apis/nhanvienletanApi/nhanVienLeTanApi";
+import { useNhanVienSuaChuaQuery } from "../../../app/apis/nhanVienBaoHanh/nhanVienBaoHanhApi";
 
 const useFetchNhanVienQuery = () => {
 
-    const { data: leTanData, isLoading: leTanLoading } = useDanhSachNhanVienLeTanQuery();
+    const { data: nhanVienData, isLoading: nhanVienLoading } = useNhanVienSuaChuaQuery();
 
     const { data: suaChuaData, isLoading: suaChuaLoading } = useDanhSachNhanVienSuaChuaQuery();
 
    
     return {
-        suaChuaData, suaChuaLoading, leTanData, leTanLoading
+        suaChuaData, suaChuaLoading, nhanVienData, nhanVienLoading
     }
 
    

@@ -52,12 +52,6 @@ function DangKyVatLieuPage() {
               <div className="col-12">
                 <div className="card">
                   <div className="card-body">
-                    <div className="intput-seach">
-                      <label htmlFor="statusSelect" className="mb-2">
-                        Nhập Mã Vật Liệu:
-                      </label>
-                      <input type="text" className="form-control mb-3" />
-                    </div>
                     <div className="table-sp-kh">
                       <div className="col-md-5">
                         <h4 className="mb-2">Thông Tin Vật Liệu</h4>
@@ -75,7 +69,7 @@ function DangKyVatLieuPage() {
                           </p>
                         </div>
                         <div className="form-group">
-                          <label className="mb-2 mt-2">Tên Vật Liệu</label>
+                          <label className="mb-2 mt-2">Tên Model</label>
                           <input
                             type="text"
                             className="form-control"

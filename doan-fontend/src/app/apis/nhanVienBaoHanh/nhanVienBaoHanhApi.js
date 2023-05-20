@@ -14,14 +14,63 @@ export const nhanVienBaoHanhApi = createApi({
       return heades;
     },
   }),
+  tagTypes: ['Product'],
   endpoints: (builder) => ({
-    danhSachNhanVienLeTan: builder.query ({
-        query: () => "danh-sach/le-tan"
+    nhanVienSuaChua: builder.query ({
+        query: () => "danh-sach/sua-chua",
+        providesTags: ['Product'],
+    }),
+    searchHistoryProductByTerm: builder.query ({
+      query: ({page,pageSize,term}) => `search/history-product?page=${page}&pageSize=${pageSize}&term=${term}`,
+      providesTags: ['Product'],
+    }),
+    findProductAndCustomerById: builder.query ({
+      query: (id) => `product/${id}`,
+      providesTags: ['Product'],
+    }),
+    registerWarrantyMoney: builder.mutation ({
+      query: (data) => ({
+        url: "dang-ky/tinh-phi",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ['Product'],
+    }),
+    registerWarrantyNoMoney: builder.mutation ({
+      query: (data) => ({
+        url: "dang-ky/khong-tinh-phi",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ['Product'],
+    }),
+    getDanhSachSanPhamBaoHanhPending: builder.query ({
+      query: ({page,pageSize,term}) => `danh-sach/pending?page=${page}&pageSize=${pageSize}&term=${term}`,
+      providesTags: ['Product'],
+    }),
+    getDanhSachSanPhamBaoHanhOK: builder.query ({
+      query: ({page,pageSize,term}) => `danh-sach/ok?page=${page}&pageSize=${pageSize}&term=${term}`,
+      providesTags: ['Product'],
+    }),
+    getDanhSachSanPhamBaoHanhTatCa: builder.query ({
+      query: ({page,pageSize,term}) => `danh-sach/tat-ca?page=${page}&pageSize=${pageSize}&term=${term}`,
+      providesTags: ['Product'],
+    }),
+    getProductById: builder.query ({
+      query: (id) => `san-pham/bao-hanh/${id}`,
+      providesTags: ['Product'],
     }),
   }),
 });
 
 export const {
-    useLazyDanhSachNhanVienLeTanQuery,
-    useDanhSachNhanVienLeTanQuery
+    useNhanVienSuaChuaQuery,
+    useSearchHistoryProductByTermQuery,
+    useFindProductAndCustomerByIdQuery,
+    useRegisterWarrantyMoneyMutation,
+    useRegisterWarrantyNoMoneyMutation,
+    useGetDanhSachSanPhamBaoHanhOKQuery,
+    useGetDanhSachSanPhamBaoHanhPendingQuery,
+    useGetDanhSachSanPhamBaoHanhTatCaQuery,
+    useGetProductByIdQuery
 } = nhanVienBaoHanhApi;

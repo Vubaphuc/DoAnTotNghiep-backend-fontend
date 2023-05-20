@@ -40,15 +40,11 @@ public class User implements UserDetails {
     @JoinColumn(name = "avatar")
     private Image avatar;
 
-
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "roles_id"))
     private List<Role> roles = new ArrayList<>();
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "loai_nhan_vien_id")
-    private LoaiNhanVien loaiNhanVien;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

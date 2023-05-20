@@ -1,7 +1,5 @@
 import React, { useEffect } from "react";
-import { Controller, useForm } from "react-hook-form";
 import { Link, useParams } from "react-router-dom";
-import Select from "react-select";
 import hookTaoHoaDonSanPham from "../../../hook/hookNhanvien/hookNhanVienLeTan/hookTaoHoaDonSanPham";
 import { useChiTietSanPhamOKQuery } from "../../../../app/apis/nhanvienletanApi/hoaDonNVLTApi";
 
@@ -22,7 +20,6 @@ function HoaDonVaBaoHanhPage() {
     return <h2>Loading....</h2>;
   }
 
-  console.log(sanPhamData);
 
   return (
     <>

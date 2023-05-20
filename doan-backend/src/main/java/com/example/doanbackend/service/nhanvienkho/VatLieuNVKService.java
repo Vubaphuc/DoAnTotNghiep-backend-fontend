@@ -2,23 +2,26 @@ package com.example.doanbackend.service.nhanvienkho;
 
 import com.example.doanbackend.dto.DanhSachVatLieuDto;
 import com.example.doanbackend.dto.DanhSachVenderDto;
+import com.example.doanbackend.dto.HistoryMaterialDto;
 import com.example.doanbackend.dto.LinhKienDto;
-import com.example.doanbackend.dto.page.PageDanhSachVatLieuDto;
-import com.example.doanbackend.dto.page.PageLinhKienNVK;
-import com.example.doanbackend.dto.page.PageVenderNVK;
+import com.example.doanbackend.dto.page.*;
 import com.example.doanbackend.entity.LinhKien;
 import com.example.doanbackend.entity.VatLieu;
 import com.example.doanbackend.entity.Vendor;
 import com.example.doanbackend.exception.BadRequestException;
 import com.example.doanbackend.request.TaoMoiLoaiLinhKien;
 import com.example.doanbackend.request.TaoVatLieuMoi;
+import com.example.doanbackend.response.StatusResponse;
+import com.example.doanbackend.security.ICurrentUserLmpl;
 import com.example.doanbackend.service.jpaservice.EntityLinhKienService;
 import com.example.doanbackend.service.jpaservice.EntityVatLieuService;
 import com.example.doanbackend.service.jpaservice.EntityVenderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -29,6 +32,8 @@ public class VatLieuNVKService {
     private EntityVenderService entityVenderService;
     @Autowired
     private EntityVatLieuService entityVatLieuService;
+    @Autowired
+    private ICurrentUserLmpl iCurrentUserLmpl;
 
 
     public PageLinhKienNVK danhSachLinhKien(int page, int pageSize) {
@@ -44,7 +49,7 @@ public class VatLieuNVKService {
         );
     }
 
-    public LinhKien taoMoiLoaiLinhKien(TaoMoiLoaiLinhKien taoMoiLoaiLinhKien) {
+    public StatusResponse taoMoiLoaiLinhKien(TaoMoiLoaiLinhKien taoMoiLoaiLinhKien) {
 
         if (entityLinhKienService.kiemTraTenLinhKien(taoMoiLoaiLinhKien.getName()).isPresent()) {
             throw new BadRequestException("Loại Linh kiện đã tồn tại");
@@ -53,15 +58,16 @@ public class VatLieuNVKService {
         LinhKien linhKien = LinhKien.builder()
                 .name(taoMoiLoaiLinhKien.getName())
                 .thoiGianBaoHanh(taoMoiLoaiLinhKien.getThoiGianBaoHanh())
+                .nhanVienNhap(iCurrentUserLmpl.getUser())
                 .build();
 
         entityLinhKienService.save(linhKien);
 
-        return linhKien;
+        return new StatusResponse(200,"Đăng Ký Thành Công");
     }
 
     // tạo mới vật liệu
-    public String taoMoiVatLieu(TaoVatLieuMoi taoVatLieuMoi) {
+    public StatusResponse taoMoiVatLieu(TaoVatLieuMoi taoVatLieuMoi) {
 
         if (entityVatLieuService.kiemTraCodeVatLieu(taoVatLieuMoi.getMaVatLieu()).isPresent()) {
 
@@ -70,24 +76,25 @@ public class VatLieuNVKService {
 
             entityVatLieuService.save(vatLieu);
 
-            return "Cập nhật thành công";
+            return new StatusResponse(200,"Cập Nhật Thành Công");
         }
 
         LinhKien linhKien = entityLinhKienService.findById(taoVatLieuMoi.getLoaiLinhKienId());
 
-        Vendor vendor = entityVenderService.layVenderRaTheoId(taoVatLieuMoi.getVenderId());
+        Vendor vendor = entityVenderService.findById(taoVatLieuMoi.getVenderId());
 
         VatLieu vatLieu = VatLieu.builder()
                 .code(taoVatLieuMoi.getMaVatLieu())
                 .tenModel(taoVatLieuMoi.getTenModel())
                 .soLuong(taoVatLieuMoi.getSoLuong())
                 .linhKien(linhKien)
-                .vendors(List.of(vendor))
+                .vendor(vendor)
+                .nhanVienNhap(iCurrentUserLmpl.getUser())
                 .build();
 
         entityVatLieuService.save(vatLieu);
 
-        return "Đăng Ký Thành công";
+        return new StatusResponse(200,"Đăng Ký Thành Công");
     }
 
     public PageDanhSachVatLieuDto danhSachVatLieuAll(int page, int pageSize) {
@@ -101,5 +108,24 @@ public class VatLieuNVKService {
                (int) Math.ceil(vatLieuDtoPage.getTotalElements()),
                vatLieuDtoPage.getContent()
        );
+    }
+
+    public PageHistoryMaterial searchHistoryMaterial(int page, int pageSize, String term) {
+
+        if (term == null || term.trim().isEmpty()) {
+            return new PageHistoryMaterial(
+                    0,0,0,0,new ArrayList<>()
+            );
+        }
+
+        Page<HistoryMaterialDto> materialDtos = entityVatLieuService.searchHistoryMaterial(page,pageSize,term);
+
+        return new PageHistoryMaterial(
+                materialDtos.getNumber() + 1,
+                materialDtos.getSize(),
+                materialDtos.getTotalPages(),
+                (int) Math.ceil(materialDtos.getTotalElements()),
+                materialDtos.getContent()
+        );
     }
 }

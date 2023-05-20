@@ -17,35 +17,43 @@ export const venderNVKApi = createApi ({
             return heades;
         },
     }),
+    tagTypes: ['Product'],
     endpoints: (builder) => ({
         danhSachTatCaVender: builder.query ({
-            query: ({page,pageSize}) => `danh-sach?page=${page}&pageSize=${pageSize}`
+            query: ({page,pageSize}) => `danh-sach?page=${page}&pageSize=${pageSize}`,
+            providesTags: ['Product'],
         }),
         danhSachVatLieuTheoVendor: builder.query ({
-            query: ({page,pageSize,vendorId}) => `chi-tiet?page=${page}&pageSize=${pageSize}&vendorId=${vendorId}`
+            query: ({page,pageSize,vendorId}) => `chi-tiet?page=${page}&pageSize=${pageSize}&vendorId=${vendorId}`,
+            providesTags: ['Product'],
         }),
         timKiemVenderTheoId: builder.query ({
-            query: (id) => `search/${id}`
+            query: (id) => `search/${id}`,
+            providesTags: ['Product'],
         }),
         timKiemVenderTheoTen: builder.query ({
-            query: (name) => `tim-kiem/${name}`
+            query: (name) => `tim-kiem/${name}`,
+            providesTags: ['Product'],
         }),
         danhSachVenderCoTongSP: builder.query ({
-            query: ({page,pageSize}) => `tong?page=${page}&pageSize=${pageSize}`
+            query: ({page,pageSize}) => `tong?page=${page}&pageSize=${pageSize}`,
+            providesTags: ['Product'],
         }),
         taoMoiVender: builder.mutation ({
             query: (data) => ({
                 url: "tao-moi",
                 method: "POST",
                 body: data,
-            })
+            }),
+            invalidatesTags: ['Product'],
         }),
         suaTenVender: builder.mutation ({
             query: ({id,...data}) => ({
                 url: `sua-ten/${id}`,
                 method: "PUT",
                 body: data,
-            })
+            }),
+            invalidatesTags: ['Product'],
         }), 
     }),
 

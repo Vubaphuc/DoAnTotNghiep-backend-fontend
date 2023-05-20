@@ -4,28 +4,26 @@ import { Link } from "react-router-dom";
 import { useLazyDanhSachVenderCoTongSPQuery } from "../../../../app/apis/nhanvienkhoApis/venderNVKApi";
 
 function DanhSachVenderPage() {
-
-  const [getVendor, { data: vendorData, isLoading: vendorLoading }] = useLazyDanhSachVenderCoTongSPQuery();
+  const [getVendor, { data: vendorData, isLoading: vendorLoading }] =
+    useLazyDanhSachVenderCoTongSPQuery();
 
   useEffect(() => {
     getVendor({
       page: 1,
-      pageSize: 10
-    })
-  },[]);
+      pageSize: 10,
+    });
+  }, []);
 
   if (vendorLoading) {
-    return <h2>Loading...</h2>
+    return <h2>Loading...</h2>;
   }
-
 
   const handlePageClick = (page) => {
     getVendor({
       page: page.selected + 1,
-      pageSize: 10
-    })
+      pageSize: 10,
+    });
   };
-
 
   return (
     <>
@@ -45,29 +43,28 @@ function DanhSachVenderPage() {
                       </tr>
                     </thead>
                     <tbody>
-                      {vendorData?.data && vendorData?.data.map((vendor) => (
-
-                      
-                      <tr key={vendor?.id}>
-                        <td>
-                          <Link
-                            to={`/nhan-vien/kho/${vendor.id}`}
-                            className="text-decoration-none"
-                          >
-                            {vendor?.id}
-                          </Link>
-                        </td>
-                        <td>
-                          <Link
-                            to={`/nhan-vien/kho/${vendor.id}`}
-                            className="text-decoration-none"
-                          >
-                            {vendor?.name}
-                          </Link>
-                        </td>
-                        <td>{vendor?.soLuongVatLieu}</td>
-                      </tr>
-                      ))}
+                      {vendorData?.data &&
+                        vendorData?.data.map((vendor) => (
+                          <tr key={vendor?.id}>
+                            <td>
+                              <Link
+                                to={`/nhan-vien/kho/${vendor.id}`}
+                                className="text-decoration-none"
+                              >
+                                {vendor?.id}
+                              </Link>
+                            </td>
+                            <td>
+                              <Link
+                                to={`/nhan-vien/kho/${vendor.id}`}
+                                className="text-decoration-none"
+                              >
+                                {vendor?.name}
+                              </Link>
+                            </td>
+                            <td>{vendor?.soLuongVatLieu}</td>
+                          </tr>
+                        ))}
                     </tbody>
                   </table>
                   <div

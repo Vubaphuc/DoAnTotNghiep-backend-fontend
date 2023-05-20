@@ -32,6 +32,7 @@ public class NhanVienSuaChuaSPService {
     private EntityLinhKienService entityLinhKienService;
 
     public PageDanhSachSanPhamNVSC layDanhSachSanPhamPhanPhatChoUser(int page, int pageSize) {
+
        Page<DanhSachSanPhamNVSCDto> sanPhams = entitySanPhamService.layDanhSachSanPhamPhanPhatChoUser(page, pageSize,iCurrentUserLmpl.getUser().getId());
        return new PageDanhSachSanPhamNVSC(
                sanPhams.getNumber() + 1,

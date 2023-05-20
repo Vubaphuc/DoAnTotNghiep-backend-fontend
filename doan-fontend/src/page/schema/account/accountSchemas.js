@@ -26,5 +26,5 @@ export const forgotPasswordSchema = yup.object ({
     .matches(
         /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
         "Email không hợp lệ"
-    )
+    ),
 });

@@ -7,6 +7,7 @@ import Select from "react-select";
 import { useChiTietKhachHangTheoIdQuery } from "../../../../app/apis/nhanvienletanApi/khachHangApi";
 
 function DangKySanPhamMoiPage() {
+  
   const { khachHangId } = useParams();
 
   const { control, register, handleSubmit, errors, onDangKySanPham } =

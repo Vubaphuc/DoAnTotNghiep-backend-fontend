@@ -1,7 +1,5 @@
 
 import { useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import { useCapNhatNhatAvatarMutation } from "../../../app/apis/nhanvienchungapis/thongTinCaNhanApi";
 import useFetchQuery from "./useFetchQuery";
 import { useState } from "react";
 import axios from "axios";
